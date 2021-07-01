@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Start() { // Initialize variable
         rb2d = gameObject.GetComponent<Rigidbody2D>();
+        rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         movementAnimator = gameObject.GetComponent<Animator>();
         animatorParameterIds.Add(Animator.StringToHash("IsInAir"));
         animatorParameterIds.Add(Animator.StringToHash("MovingHorizontally"));
