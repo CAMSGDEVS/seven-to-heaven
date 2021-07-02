@@ -903,7 +903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   windStrength: 10
-  sevenSprite: {fileID: 1394514260}
+  onGround: 0
 --- !u!50 &1980569020
 Rigidbody2D:
   serializedVersion: 4
@@ -1041,6 +1041,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1980569015}
   cursorSprite: {fileID: 2062485296}
+  sRenderer: {fileID: 2062485298}
 --- !u!212 &2062485298
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1081,7 +1082,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 3625043607559282579, guid: 045b15ec09bba42448d89db77fa6f20a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d1cc39ab5c709ea42bff7811e587722e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
