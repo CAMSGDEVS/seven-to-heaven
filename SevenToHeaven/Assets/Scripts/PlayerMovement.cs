@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
-    private PlayerMovement _instance;
-    public PlayerMovement Instance {
+    private static PlayerMovement _instance;
+    public static PlayerMovement Instance {
         get {
             if (_instance == null) {
                 Debug.LogError("PlayerMovement is null");
