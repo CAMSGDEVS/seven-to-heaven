@@ -4,9 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class OpenDoor : MonoBehaviour {
 
-    public Text text;
-    private bool isCurrentDoorOpen;
+    [SerializeField]
+    private Text text;
+
     private LevelDoor levelDoor;
+    private bool isCurrentDoorOpen;
 
     private void Update() {
         if (Input.GetKeyDown("space"))
@@ -22,12 +24,10 @@ public class OpenDoor : MonoBehaviour {
             if (levelDoor.isUnlocked == true) {
                 text.text = "Press [SPACE] to enter";
                 isCurrentDoorOpen = true;
-            } else {
+            } else
                 text.text = "This door is locked";
-            }
-        } else {
+        } else
             text.transform.gameObject.SetActive(false);
-        }
     }
 
 }
