@@ -144,9 +144,9 @@ public class DirectionAnimations : MonoBehaviour
                     sevenSpriteR.sprite = sevenFlyingSprites[spriteIndex];
                 } else {
                     if (goingUp) {
-                        sevenSpriteR.sprite = sevenFlyingSprites[5];
-                    } else {
                         sevenSpriteR.sprite = sevenFlyingSprites[7];
+                    } else {
+                        sevenSpriteR.sprite = sevenFlyingSprites[5];
                     }
                     
                 }
@@ -154,6 +154,7 @@ public class DirectionAnimations : MonoBehaviour
                 sevenSpriteR.sprite = spriteIndex switch { //Lower angle's sprite when in frame group 2 (except for sprite 0 and 7, as -1 and 6 are null)
                     0 => sevenFlyingSprites[0],
                     7 => sevenFlyingSprites[7],
+                    6 => (goingUp ? sevenFlyingSprites[7] : sevenFlyingSprites[4]),
                     int n when n>0 && n<7  => sevenFlyingSprites[spriteIndex - 1],
                     _ => sevenFlyingSprites[0] //Should never occur
                 };
