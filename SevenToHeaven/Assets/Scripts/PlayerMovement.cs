@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour {
     private Vector2 direction;
 
     private Rigidbody2D rb2d;
-    private bool windIsBlowing;
+    public bool windIsBlowing { get; private set; }
 
     public bool onGround;
     private void Awake() {
