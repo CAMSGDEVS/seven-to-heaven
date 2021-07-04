@@ -326,8 +326,8 @@ GameObject:
   - component: {fileID: 738921357}
   - component: {fileID: 738921356}
   - component: {fileID: 738921359}
-  - component: {fileID: 738921360}
   - component: {fileID: 738921358}
+  - component: {fileID: 738921362}
   m_Layer: 0
   m_Name: Circle
   m_TagString: Untagged
@@ -428,26 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   windStrength: 10
-  sevenSprite: {fileID: 91959909}
---- !u!95 &738921360
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 738921355}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6ea3c8aa0e5b5774cb9434c13215e240, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  onGround: 0
 --- !u!224 &738921361
 RectTransform:
   m_ObjectHideFlags: 0
@@ -468,6 +449,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &738921362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738921355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cf120c5dbf43bf429de20f025ed92c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sevenGameObject: {fileID: 91959907}
 --- !u!1 &1125768270
 GameObject:
   m_ObjectHideFlags: 0
