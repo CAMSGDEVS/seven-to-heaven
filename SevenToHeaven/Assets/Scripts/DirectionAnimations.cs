@@ -107,6 +107,7 @@ public class DirectionAnimations : MonoBehaviour
     }
     private void AngledAnimation() {
         int velocity = (int) Mathf.Sqrt(Mathf.Pow(rb2d.velocity.x, 2) + Mathf.Pow(rb2d.velocity.y, 2));
+        if (velocity <= 0) velocity = 1;
         rotateFrameCycle = (rotateFrameCycle + 1) % (velocity);
         if (rotateFrameCycle > velocity/2) {
             inRotationFrameGroupOne = !inRotationFrameGroupOne;
