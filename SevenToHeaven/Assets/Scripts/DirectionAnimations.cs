@@ -30,6 +30,8 @@ public class DirectionAnimations : MonoBehaviour
     private int rotateFrameCycle = 0;
     private bool inRotationFrameGroupOne = false;
 
+    public const int maxSpeed = 10;
+
     private bool onGround = false;
 
     private void Awake() {
@@ -108,10 +110,11 @@ public class DirectionAnimations : MonoBehaviour
     private void AngledAnimation() {
         int velocity = (int) Mathf.Sqrt(Mathf.Pow(rb2d.velocity.x, 2) + Mathf.Pow(rb2d.velocity.y, 2));
         if (velocity <= 0) velocity = 1;
-        rotateFrameCycle = (rotateFrameCycle + 1) % (velocity);
-        if (rotateFrameCycle > velocity/2) {
+        rotateFrameCycle = (rotateFrameCycle + 1) % (maxSpeed/velocity);
+        if (velocity > maxSpeed/2 || rotateFrameCycle == Mathf.RoundToInt((maxSpeed/velocity)/2)) {
             inRotationFrameGroupOne = !inRotationFrameGroupOne;
         }
+        
         previousAnimationType = 2;
         float angle = Mathf.Atan2(rb2d.velocity.y, rb2d.velocity.x)*180/(Mathf.PI);
         if (angle > 90) angle = -1 * angle + 180; // Maps from 2nd quadrant to 1st quadrant (90 to 180) -> (90 to 0)
