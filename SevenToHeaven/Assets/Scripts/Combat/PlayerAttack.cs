@@ -53,9 +53,6 @@ public class PlayerAttack : MonoBehaviour
     private void Awake() {
         rb2d = gameObject.GetComponent<Rigidbody2D>();
     }
-    private void Start() {
-        
-    }
 
     private void Update() {
         if (secondsSinceLastAttack < cooldownSeconds) {
@@ -71,19 +68,23 @@ public class PlayerAttack : MonoBehaviour
         } else {
             mouseAlreadyClicked = false;
         }
-
     }
 
     private void Attack() {
+        CheckEnemiesInRange();
+        GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position - new Vector3(0, 0.125f), Quaternion.identity);
+        Projectiles.Add(projectile.GetComponent<Projectile>());
+        secondsSinceLastAttack = 0;
         if (EnemyList.Any()) {
-            CheckEnemiesInRange();
             if (enemiesInRange.Any()) {
-                targetedEnemy = enemiesInRange[0];
-                GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position - new Vector3(0, 0.125f), Quaternion.identity);
-                projectile.GetComponent<Projectile>().target = targetedEnemy.gameObject;
-                Projectiles.Add(projectile.GetComponent<Projectile>());
-                secondsSinceLastAttack = 0;
+                projectile.GetComponent<Projectile>().target = enemiesInRange[0].gameObject;
+            } else {
+                projectile.GetComponent<Projectile>().target = this.gameObject;
+                projectile.GetComponent<Fade>().despawnSeconds /= 3;
             }
+        } else {
+            projectile.GetComponent<Projectile>().target = this.gameObject;
+            projectile.GetComponent<Fade>().despawnSeconds /= 3;
         }
     }
     private void CheckEnemiesInRange() {

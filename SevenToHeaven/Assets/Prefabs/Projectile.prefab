@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1929662738980947609}
   - component: {fileID: -6033388401832542083}
   - component: {fileID: 9024802344598165306}
+  - component: {fileID: 8556241776843987277}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -98,10 +99,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  rb2d: {fileID: 0}
   speed: 1
   rotationSpeed: 200
-  despawnSeconds: 5
-  timePassed: 0
+  fader: {fileID: 0}
 --- !u!50 &-6033388401832542083
 Rigidbody2D:
   serializedVersion: 4
@@ -139,3 +140,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &8556241776843987277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781952980746229397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d373b1c0b63eb024fb57403eef849c70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  despawnSeconds: 3
+  timePassed: 0
+  fadeActive: 1
+  fadeEnded: 0

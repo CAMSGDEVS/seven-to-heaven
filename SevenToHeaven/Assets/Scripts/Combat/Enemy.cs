@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
             GameObject.Destroy(projectile.gameObject);
             foreach (Projectile proj in PlayerAttack.Projectiles) {
                 if (proj.target = gameObject) {
-                    proj.timePassed = proj.despawnSeconds - 0.125f*(proj.despawnSeconds - proj.timePassed);
+                    proj.fader.timePassed = proj.fader.despawnSeconds - 0.125f*(proj.fader.despawnSeconds - proj.fader.timePassed);
                 }
             }
             PlayerAttack.EnemyList.Remove(this);
