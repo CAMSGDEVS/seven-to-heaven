@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Projectile : HomingObject
 {
+    public float damage = 1f;
+    public bool playerProjectile = true;
     [System.NonSerialized]
     public Fade fader;
 
@@ -24,7 +26,7 @@ public class Projectile : HomingObject
         if (fader != null) {
             fader.FadeObject();
             if (fader.fadeEnded) {
-                PlayerAttack.Projectiles.Remove(this);
+                PlayerAttack.PlayerProjectiles.Remove(this);
                 GameObject.Destroy(this.gameObject);
             }
         }

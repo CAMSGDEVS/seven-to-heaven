@@ -8,7 +8,7 @@ public class PlayerAttack : MonoBehaviour
     private static PlayerAttack _instance;
     public static PlayerAttack Instance {
         get { 
-            if (_instance = null){
+            if (_instance == null){
                 Debug.LogError("Playerattack is null");
             }
             return _instance;
@@ -24,16 +24,17 @@ public class PlayerAttack : MonoBehaviour
         }
         set { }
     }
-    private static List<Projectile> _projectiles = new List<Projectile>();
-    public static List<Projectile> Projectiles {
+    private static List<Projectile> _playerProjectiles = new List<Projectile>();
+    public static List<Projectile> PlayerProjectiles {
         get {
-            if (_projectiles == null) {
+            if (_playerProjectiles == null) {
                 Debug.LogError("Projectiles is null");
             }
-            return _projectiles;
+            return _playerProjectiles;
         }
         set { }
     }
+    public float health = 5f;
 
     [SerializeField]
     private GameObject projectilePrefab;
@@ -48,10 +49,10 @@ public class PlayerAttack : MonoBehaviour
 
     private List<Enemy> enemiesInRange = new List<Enemy>();
     private bool mouseAlreadyClicked = false;
-    private Enemy targetedEnemy;
 
     private void Awake() {
         rb2d = gameObject.GetComponent<Rigidbody2D>();
+        PlayerAttack._instance = this;
     }
 
     private void Update() {
@@ -73,7 +74,7 @@ public class PlayerAttack : MonoBehaviour
     private void Attack() {
         CheckEnemiesInRange();
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position - new Vector3(0, 0.125f), Quaternion.identity);
-        Projectiles.Add(projectile.GetComponent<Projectile>());
+        PlayerProjectiles.Add(projectile.GetComponent<Projectile>());
         secondsSinceLastAttack = 0;
         if (EnemyList.Any()) {
             if (enemiesInRange.Any()) {
@@ -86,6 +87,7 @@ public class PlayerAttack : MonoBehaviour
             projectile.GetComponent<Projectile>().target = this.gameObject;
             projectile.GetComponent<Fade>().despawnSeconds /= 3;
         }
+        projectile.transform.rotation = gameObject.transform.rotation;
     }
     private void CheckEnemiesInRange() {
         enemiesInRange = new List<Enemy>();

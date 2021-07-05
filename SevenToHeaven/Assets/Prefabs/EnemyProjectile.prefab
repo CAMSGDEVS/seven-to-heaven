@@ -10,11 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 211519521482625923}
   - component: {fileID: 8085819629864133105}
+  - component: {fileID: 1929662738980947609}
   - component: {fileID: -6033388401832542083}
-  - component: {fileID: -4030075694309165277}
-  - component: {fileID: 276158999237753203}
+  - component: {fileID: 9024802344598165306}
+  - component: {fileID: 8556241776843987277}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: EnemyProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4781952980746229397}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.4538545, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -85,6 +86,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1929662738980947609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781952980746229397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 876cb767750365944a2ce411abfc03df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  rb2d: {fileID: 0}
+  speed: 3
+  rotationSpeed: 200
+  damage: 1
+  playerProjectile: 0
 --- !u!50 &-6033388401832542083
 Rigidbody2D:
   serializedVersion: 4
@@ -106,33 +125,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-4030075694309165277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4781952980746229397}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24abbb924f89ad4408a979b3f60cc289, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  rb2d: {fileID: 0}
-  speed: 2
-  rotationSpeed: 200
-  projectiles: []
-  enemyProjectilePrefab: {fileID: 4781952980746229397, guid: a449c99a06c579841b3f8d836280ab80, type: 3}
-  attackMelee: 1
-  shootsProjectiles: 0
-  projectileSpacingFromPlayer: 1
-  health: 3
-  fireCooldown: 3
-  TargettingPlayer: 1
-  visionLength: 10
-  projectileVisionLength: 4
---- !u!58 &276158999237753203
+--- !u!58 &9024802344598165306
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,9 +135,25 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &8556241776843987277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781952980746229397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d373b1c0b63eb024fb57403eef849c70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  despawnSeconds: 5
+  timePassed: 0
+  fadeActive: 1
+  fadeEnded: 0

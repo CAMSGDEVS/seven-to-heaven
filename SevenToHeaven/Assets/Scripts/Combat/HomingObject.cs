@@ -6,11 +6,9 @@ public class HomingObject : MonoBehaviour
 {
     public GameObject target;
     public Rigidbody2D rb2d;
-    [SerializeField]
-    private float speed = 1f;
+    public float speed = 1f;
     [SerializeField]
     private float rotationSpeed = 200f;
-
     public void MoveTowardsTarget() { //Call during FixedUpdate
         if (target != null) {
             Vector2 direction = (Vector2) target.transform.position - rb2d.position;
@@ -19,5 +17,9 @@ public class HomingObject : MonoBehaviour
             rb2d.angularVelocity = -rotation * rotationSpeed;
             rb2d.velocity = transform.up * speed;
         }
+    }
+    public void MoveAwayFromTarget() {
+        MoveTowardsTarget();
+        rb2d.angularVelocity *= -1;
     }
 }
