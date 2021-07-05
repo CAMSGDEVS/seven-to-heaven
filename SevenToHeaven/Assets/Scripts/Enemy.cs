@@ -20,6 +20,20 @@ public class Enemy : MonoBehaviour
         DistanceFromPlayer = Mathf.Sqrt(Mathf.Pow(playerPosition.x - rb2d.position.x, 2) + Mathf.Pow(playerPosition.y - rb2d.position.y, 2)); //Distance formula
     }
 
+    private void OnTriggerEnter2D(Collider2D collision) {
+        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+        if (projectile != null) {
+            PlayerAttack.Projectiles.Remove(projectile);
+            GameObject.Destroy(projectile.gameObject);
+            foreach (Projectile proj in PlayerAttack.Projectiles) {
+                if (proj.target = gameObject) {
+                    proj.timePassed = proj.despawnSeconds - 0.125f*(proj.despawnSeconds - proj.timePassed);
+                }
+            }
+            GameObject.Destroy(gameObject);
+        }
+    }
+
 
 }
 

@@ -24,6 +24,16 @@ public class PlayerAttack : MonoBehaviour
         }
         set { }
     }
+    private static List<Projectile> _projectiles = new List<Projectile>();
+    public static List<Projectile> Projectiles {
+        get {
+            if (_projectiles == null) {
+                Debug.LogError("Projectiles is null");
+            }
+            return _projectiles;
+        }
+        set { }
+    }
 
     [SerializeField]
     private GameObject projectilePrefab;
@@ -68,7 +78,9 @@ public class PlayerAttack : MonoBehaviour
         CheckEnemiesInRange();
         if (enemiesInRange.Any()) {
             targetedEnemy = enemiesInRange[0];
-            Instantiate(projectilePrefab, gameObject.transform.position - new Vector3(0, 0.125f), Quaternion.identity);
+            GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position - new Vector3(0, 0.125f), Quaternion.identity);
+            projectile.GetComponent<Projectile>().target = targetedEnemy.gameObject;
+            Projectiles.Add(projectile.GetComponent<Projectile>());
             secondsSinceLastAttack = 0;
         }
     }
