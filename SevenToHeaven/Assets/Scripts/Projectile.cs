@@ -39,10 +39,12 @@ public class Projectile : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        Vector2 direction = (Vector2) target.transform.position - rb2d.position;
-        direction.Normalize();
-        float rotation = Vector3.Cross(direction, transform.up).z;
-        rb2d.angularVelocity = -rotation * rotationSpeed;
-        rb2d.velocity = transform.up * speed;
+        if (target != null) {
+            Vector2 direction = (Vector2) target.transform.position - rb2d.position;
+            direction.Normalize();
+            float rotation = Vector3.Cross(direction, transform.up).z;
+            rb2d.angularVelocity = -rotation * rotationSpeed;
+            rb2d.velocity = transform.up * speed;
+        }
     }
 }

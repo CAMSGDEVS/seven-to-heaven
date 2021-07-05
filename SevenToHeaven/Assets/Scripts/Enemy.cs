@@ -30,6 +30,7 @@ public class Enemy : MonoBehaviour
                     proj.timePassed = proj.despawnSeconds - 0.125f*(proj.despawnSeconds - proj.timePassed);
                 }
             }
+            PlayerAttack.EnemyList.Remove(this);
             GameObject.Destroy(gameObject);
         }
     }

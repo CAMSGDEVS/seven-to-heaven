@@ -75,13 +75,15 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void Attack() {
-        CheckEnemiesInRange();
-        if (enemiesInRange.Any()) {
-            targetedEnemy = enemiesInRange[0];
-            GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position - new Vector3(0, 0.125f), Quaternion.identity);
-            projectile.GetComponent<Projectile>().target = targetedEnemy.gameObject;
-            Projectiles.Add(projectile.GetComponent<Projectile>());
-            secondsSinceLastAttack = 0;
+        if (EnemyList.Any()) {
+            CheckEnemiesInRange();
+            if (enemiesInRange.Any()) {
+                targetedEnemy = enemiesInRange[0];
+                GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position - new Vector3(0, 0.125f), Quaternion.identity);
+                projectile.GetComponent<Projectile>().target = targetedEnemy.gameObject;
+                Projectiles.Add(projectile.GetComponent<Projectile>());
+                secondsSinceLastAttack = 0;
+            }
         }
     }
     private void CheckEnemiesInRange() {
