@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour {
     private Vector3 mousePos;
     private Vector2 direction;
 
-    private Rigidbody2D rb2d;
+    public Rigidbody2D rb2d { get; private set; }
     public bool windIsBlowing { get; private set; }
 
     public bool onGround;
