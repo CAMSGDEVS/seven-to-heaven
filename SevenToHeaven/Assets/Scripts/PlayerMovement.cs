@@ -21,14 +21,10 @@ public class PlayerMovement : MonoBehaviour {
     public bool windIsBlowing { get; private set; }
 
     public bool onGround;
-    private void Awake() {
-        _instance = this;
-    }
-
-    private void Start() { // Initialize variable
+    private void Awake() { // Initialize variables
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-        
+        _instance = this;
     }
 
     private void Update() {
@@ -42,7 +38,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private void FixedUpdate() {
         if (windIsBlowing) {
-            rb2d.velocity = new Vector2(direction.x * -1 * windStrength, direction.y * -1 * windStrength);
+            rb2d.velocity = new Vector2(direction.x * windStrength, direction.y * windStrength) * -1;
         }
     }
 }

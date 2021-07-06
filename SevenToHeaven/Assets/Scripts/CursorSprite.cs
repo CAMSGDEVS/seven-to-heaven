@@ -12,8 +12,8 @@ public class CursorSprite : MonoBehaviour {
     private Object[] cursorTextures, cursorTexturesFlipped;
 
     private void Awake() {
-        cursorTextures = Resources.LoadAll("Cursor", typeof(Texture2D));
-        cursorTexturesFlipped = Resources.LoadAll("CursorFlipped", typeof(Texture2D));
+        cursorTextures = Resources.LoadAll("Cursor/Cursor", typeof(Texture2D));
+        cursorTexturesFlipped = Resources.LoadAll("Cursor/CursorFlipped", typeof(Texture2D));
     }
 
     private void Update() {
