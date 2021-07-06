@@ -8,7 +8,8 @@ public class Projectile : HomingObject
     public bool playerProjectile = true;
     [System.NonSerialized]
     public Fade fader;
-
+    [System.NonSerialized]
+    public GameObject source;
     private Color originalColor;
     void Start() { //Initialize variables
         rb2d = gameObject.GetComponent<Rigidbody2D>();

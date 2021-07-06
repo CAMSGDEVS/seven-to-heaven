@@ -44,6 +44,9 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField]
     private float attackRange = 3;
     private float secondsSinceLastAttack = 3;
+    [SerializeField]
+    private float hitInvincibility = 0.5f;
+    private float invincibilityTimePassed = 0.5f;
 
     public Rigidbody2D rb2d { get; private set; }
 
@@ -53,11 +56,15 @@ public class PlayerAttack : MonoBehaviour
     private void Awake() {
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         PlayerAttack._instance = this;
+        invincibilityTimePassed = hitInvincibility;
     }
 
     private void Update() {
         if (secondsSinceLastAttack < cooldownSeconds) {
             secondsSinceLastAttack += Time.deltaTime;
+        }
+        if (invincibilityTimePassed < hitInvincibility) {
+            invincibilityTimePassed += Time.deltaTime;
         }
         if (Input.GetMouseButtonDown(1)) {
             if (!mouseAlreadyClicked) {
@@ -74,21 +81,24 @@ public class PlayerAttack : MonoBehaviour
     private void Attack() {
         CheckEnemiesInRange();
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position - new Vector3(0, 0.125f), Quaternion.identity);
+        Projectile projectileComponent = projectile.GetComponent<Projectile>();
         PlayerProjectiles.Add(projectile.GetComponent<Projectile>());
         secondsSinceLastAttack = 0;
         if (EnemyList.Any()) {
             if (enemiesInRange.Any()) {
-                projectile.GetComponent<Projectile>().target = enemiesInRange[0].gameObject;
+                projectileComponent.target = enemiesInRange[0].gameObject;
             } else {
-                projectile.GetComponent<Projectile>().target = this.gameObject;
+                projectileComponent.target = gameObject;
                 projectile.GetComponent<Fade>().despawnSeconds /= 3;
             }
         } else {
-            projectile.GetComponent<Projectile>().target = this.gameObject;
+            projectileComponent.target = gameObject;
             projectile.GetComponent<Fade>().despawnSeconds /= 3;
         }
         projectile.transform.rotation = gameObject.transform.rotation;
+        projectileComponent.source = gameObject;
     }
+
     private void CheckEnemiesInRange() {
         enemiesInRange = new List<Enemy>();
         foreach (Enemy enemy in EnemyList) {
@@ -98,5 +108,63 @@ public class PlayerAttack : MonoBehaviour
             }
         }
         enemiesInRange = enemiesInRange.OrderBy(enemy => enemy.DistanceFromPlayer).ToList();
+    }
+    private void OnTriggerEnter2D(Collider2D collision) {
+        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+        Enemy collidedEnemy = collision.gameObject.GetComponent<Enemy>();
+        if (invincibilityTimePassed >= hitInvincibility) {
+            if (projectile != null && !projectile.playerProjectile) {
+                health -= projectile.damage;
+                projectile.source.GetComponent<Enemy>().projectiles.Remove(projectile);
+                GameObject.Destroy(projectile.gameObject);
+                if (health > 0) {
+                    StartCoroutine(damageAnimation());
+                }
+            } else {
+                if (collidedEnemy != null && collidedEnemy.attackMelee) {
+                    health -= collidedEnemy.meleeDamage;
+                    if (health > 0) {
+                        StartCoroutine(damageAnimation());
+                    }
+                }   
+            }
+            invincibilityTimePassed = 0f;
+        } else {
+            if (projectile != null && !projectile.playerProjectile) {
+                projectile.source.GetComponent<Enemy>().projectiles.Remove(projectile);
+                GameObject.Destroy(projectile.gameObject);
+            }
+        }
+        if (health <= 0) {
+            foreach (Projectile proj in PlayerProjectiles) {
+                GameObject.Destroy(proj.gameObject);
+            }
+            PlayerProjectiles.Clear();
+            foreach (Enemy enemy in EnemyList) {
+                foreach (Projectile proj in enemy.projectiles) {
+                    GameObject.Destroy(proj);
+                }
+                enemy.projectiles.Clear();
+                enemy.target = enemy.gameObject;
+            }
+            Debug.Log("Game over");
+        }
+    }
+    
+    private IEnumerator damageAnimation() {
+        SpriteRenderer spriteR = gameObject.GetComponentInChildren<SpriteRenderer>();
+        Color originalColor = spriteR.color;
+        for (int j = 0; j < 2; j++) {
+            for (float i = 1; i > 0.5f; i += -0.5f / ((hitInvincibility / 4) * 60) ) {
+                spriteR.color = new Color(i * originalColor.r, i * originalColor.g, i * originalColor.b, spriteR.color.a);
+                yield return new WaitForSeconds(0.016f);
+            }
+            for (float i = 0.5f; i < 1; i += 0.5f / ((hitInvincibility / 4) * 60)) {
+                spriteR.color = new Color(i * originalColor.r, i * originalColor.g, i * originalColor.b, spriteR.color.a);
+                yield return new WaitForSeconds(0.016f);
+            }
+        }
+        spriteR.color = originalColor;
+        yield return null;
     }
 }

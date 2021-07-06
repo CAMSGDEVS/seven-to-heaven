@@ -8,8 +8,8 @@ public class Enemy : HomingObject
     [SerializeField]
     private GameObject enemyProjectilePrefab;
 
-    [SerializeField]
-    private bool attackMelee = true;
+    public bool attackMelee = true;
+    public float meleeDamage = 1f;
     [SerializeField]
     private bool shootsProjectiles = false;
     [SerializeField]
@@ -76,6 +76,7 @@ public class Enemy : HomingObject
                 GameObject projectile = Instantiate(enemyProjectilePrefab, gameObject.transform.position, Quaternion.identity);
                 Projectile projectileComponent = projectile.GetComponent<Projectile>();
                 projectiles.Add(projectileComponent);
+                projectileComponent.source = gameObject;
                 projectileComponent.playerProjectile = false;
                 projectileComponent.target = PlayerAttack.Instance.gameObject;
                 timeSinceLastFire = 0f;
