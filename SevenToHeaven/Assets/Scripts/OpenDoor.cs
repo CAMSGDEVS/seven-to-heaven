@@ -8,25 +8,34 @@ public class OpenDoor : MonoBehaviour {
     [SerializeField]
     private Text text;
 
-    [SerializeField]
-    private Animator animator;
-
     private LevelDoor levelDoor;
     private bool isCurrentDoorOpen;
 
     IEnumerator WaitForAnim() {
         yield return new WaitForSeconds(3f);
         // animator.GetCurrentAnimatorStateInfo(0).length is slow, and returns the length of the previous state. A hard-coded value is used instead.
-
         SceneManager.LoadScene(levelDoor.level);
+    }
+
+    IEnumerator WaitForWinAnim() {
+        yield return new WaitForSeconds(3f);
+        GameManager.Instance.Win();
     }
 
     private void Update() {
         if (Input.GetKeyDown("space"))
             if (isCurrentDoorOpen) {
-                animator.SetBool("doorIsOpening", true);
-                StartCoroutine(CameraMovement.Instance.Shake(3f, 0.04f));
-                StartCoroutine(WaitForAnim());
+                if (levelDoor.level != "Win") {
+                    Animator animator = levelDoor.GetComponent<Animator>();
+                    animator.SetBool("doorIsOpening", true);
+                    StartCoroutine(CameraMovement.Instance.Shake(3f, 0.04f));
+                    StartCoroutine(WaitForAnim());
+                } else {
+                    Animator animator = levelDoor.GetComponent<Animator>();
+                    animator.SetBool("doorIsOpening", true);
+                    StartCoroutine(CameraMovement.Instance.Shake(3f, 0.04f));
+                    StartCoroutine(WaitForWinAnim());
+                }
             }
     }
 

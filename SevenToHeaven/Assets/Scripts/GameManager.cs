@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -19,14 +20,30 @@ public class GameManager : MonoBehaviour {
     private GameObject loseCanvas, winCanvas, statTemplateHolder;
 
     [SerializeField]
-    private Text pointText, statTemplate;
+    private Text statTemplate, doorStatus;
 
-    public void Win(int points, List<string> stats) {
+    private bool gameWon;
+
+    public Dictionary<string, int> statList = new Dictionary<string, int>() {
+        {"Points", 0},
+        {"Kills", 0},
+    };
+
+    public void Win() {
         winCanvas.SetActive(true); // Change to a smoother transition later if needed.
-        pointText.text = points.ToString();
-        for (int i = 0; i < stats.Count; i++) {
+        doorStatus.transform.gameObject.SetActive(false);
+        foreach (var stat in statList) {
             Text newStat = Instantiate(statTemplate, Vector3.zero, Quaternion.identity, statTemplateHolder.transform);
-            newStat.text = stats[i];
+            newStat.text = stat.Key + ": " + stat.Value;
+        }
+    }
+
+    private void Update() {
+        if (gameWon) {
+            if (Input.GetKeyDown("space")) {
+                // Show end of demo UI
+                SceneManager.LoadScene("LevelSelect");
+            }
         }
     }
 

@@ -104,6 +104,8 @@ public class Enemy : HomingObject
                 }
                 projectiles.Clear();
                 PlayerAttack.EnemyList.Remove(this);
+                GameManager.Instance.statList["Kills"] += 1;
+                GameManager.Instance.statList["Points"] += 10;
                 GameObject.Destroy(gameObject);
             }
         }
