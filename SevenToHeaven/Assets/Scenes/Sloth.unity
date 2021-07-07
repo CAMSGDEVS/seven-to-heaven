@@ -322,12 +322,12 @@ GameObject:
   - component: {fileID: 369529588}
   - component: {fileID: 369529587}
   m_Layer: 5
-  m_Name: DoorStatus
+  m_Name: InGameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &369529586
 RectTransform:
   m_ObjectHideFlags: 0
@@ -344,8 +344,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 137.5}
-  m_SizeDelta: {x: 637.916, y: 61.6631}
+  m_AnchoredPosition: {x: 0, y: 147.8579}
+  m_SizeDelta: {x: 697.2844, y: 62.6525}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &369529587
 MonoBehaviour:
@@ -374,13 +374,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 3
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &369529588
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -802,7 +802,9 @@ MonoBehaviour:
   winCanvas: {fileID: 361214505}
   statTemplateHolder: {fileID: 705223337}
   statTemplate: {fileID: 3105850849465916856, guid: bc1f269e372e6564eb063415281311ed, type: 3}
-  doorStatus: {fileID: 369529587}
+  inGameText: {fileID: 369529587}
+  gameWon: 0
+  gameLost: 0
 --- !u!4 &851546561
 Transform:
   m_ObjectHideFlags: 0
@@ -1202,7 +1204,7 @@ GameObject:
   - component: {fileID: 1678858840}
   - component: {fileID: 1678858839}
   m_Layer: 5
-  m_Name: DoorStatusCanvas
+  m_Name: InGameUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

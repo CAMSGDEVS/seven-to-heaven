@@ -31,6 +31,7 @@ public class OpenDoor : MonoBehaviour {
                     StartCoroutine(CameraMovement.Instance.Shake(3f, 0.04f));
                     StartCoroutine(WaitForAnim());
                 } else {
+                    // Check if winning is possible here
                     Animator animator = levelDoor.GetComponent<Animator>();
                     animator.SetBool("doorIsOpening", true);
                     StartCoroutine(CameraMovement.Instance.Shake(3f, 0.04f));
@@ -40,17 +41,20 @@ public class OpenDoor : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit)) {
-            text.transform.gameObject.SetActive(true);
-            levelDoor = hit.transform.GetComponent<LevelDoor>();
-            if (levelDoor.isUnlocked == true) {
-                text.text = "Press [SPACE] to enter";
-                isCurrentDoorOpen = true;
+        if (!GameManager.Instance.gameLost) {
+            RaycastHit hit;
+            isCurrentDoorOpen = false;
+            if (Physics.Raycast(transform.position, Vector3.forward, out hit)) {
+                levelDoor = hit.transform.GetComponent<LevelDoor>();
+                if (levelDoor.isUnlocked == true) {
+                    text.text = "Press [SPACE] to enter";
+                    isCurrentDoorOpen = true;
+                } else {
+                    text.text = "This door is locked";
+                }
             } else
-                text.text = "This door is locked";
-        } else
-            text.transform.gameObject.SetActive(false);
+                text.text = "";
+        }
     }
 
 }

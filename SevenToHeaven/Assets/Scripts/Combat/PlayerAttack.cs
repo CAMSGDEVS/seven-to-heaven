@@ -52,10 +52,11 @@ public class PlayerAttack : MonoBehaviour
 
     private List<Enemy> enemiesInRange = new List<Enemy>();
     private bool mouseAlreadyClicked = false;
+    private bool dead = false;
 
     private void Awake() {
-        rb2d = gameObject.GetComponent<Rigidbody2D>();
         PlayerAttack._instance = this;
+        rb2d = gameObject.GetComponent<Rigidbody2D>();
         invincibilityTimePassed = hitInvincibility;
     }
 
@@ -144,10 +145,15 @@ public class PlayerAttack : MonoBehaviour
                 foreach (Projectile proj in enemy.projectiles) {
                     GameObject.Destroy(proj);
                 }
+
                 enemy.projectiles.Clear();
                 enemy.target = enemy.gameObject;
             }
-            Debug.Log("Game over");
+
+            if (dead == false) { // Prevent Lose from being called multiple times
+                GameManager.Instance.Lose();
+                dead = true;
+            }
         }
     }
     

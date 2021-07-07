@@ -20,9 +20,9 @@ public class GameManager : MonoBehaviour {
     private GameObject loseCanvas, winCanvas, statTemplateHolder;
 
     [SerializeField]
-    private Text statTemplate, doorStatus;
+    private Text statTemplate, inGameText;
 
-    private bool gameWon;
+    public bool gameWon = false, gameLost = false;
 
     public Dictionary<string, int> statList = new Dictionary<string, int>() {
         {"Points", 0},
@@ -31,18 +31,27 @@ public class GameManager : MonoBehaviour {
 
     public void Win() {
         winCanvas.SetActive(true); // Change to a smoother transition later if needed.
-        doorStatus.transform.gameObject.SetActive(false);
+        inGameText.transform.gameObject.SetActive(false);
+        gameWon = true;
         foreach (var stat in statList) {
             Text newStat = Instantiate(statTemplate, Vector3.zero, Quaternion.identity, statTemplateHolder.transform);
             newStat.text = stat.Key + ": " + stat.Value;
         }
     }
 
+    public void Lose() {
+        gameLost = true;
+        inGameText.text = "Press [SPACE] to continue...";
+    }
+
     private void Update() {
-        if (gameWon) {
-            if (Input.GetKeyDown("space")) {
+        if (Input.GetKeyDown("space")) {
+            if (gameWon) {
                 // Show end of demo UI
                 SceneManager.LoadScene("LevelSelect");
+            }
+            if (gameLost) {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
     }
