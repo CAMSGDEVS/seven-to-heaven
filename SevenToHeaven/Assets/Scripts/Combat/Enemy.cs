@@ -27,6 +27,9 @@ public class Enemy : HomingObject
     [SerializeField]
     private float projectileVisionLength = 4f;
 
+    [SerializeField]
+    GameManager gameManager;
+
     private void Awake() { // Initialize values 
         rb2d = gameObject.GetComponent<Rigidbody2D>();
     }
@@ -104,8 +107,8 @@ public class Enemy : HomingObject
                 }
                 projectiles.Clear();
                 PlayerAttack.EnemyList.Remove(this);
-                GameManager.Instance.statList["Kills"] += 1;
-                GameManager.Instance.statList["Points"] += 10;
+                gameManager.statList["Kills"] += 1;
+                gameManager.statList["Points"] += 10;
                 GameObject.Destroy(gameObject);
             }
         }

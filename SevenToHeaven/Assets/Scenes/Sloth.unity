@@ -458,6 +458,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4030075694309165277, guid: 5b6990ea4df9bae4594c2a1aaafc3607, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 851546560}
     - target: {fileID: 211519521482625923, guid: 5b6990ea4df9bae4594c2a1aaafc3607, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -618,6 +622,7 @@ MonoBehaviour:
   cooldownSeconds: 1
   attackRange: 3
   hitInvincibility: 0.5
+  gameManager: {fileID: 851546560}
 --- !u!224 &738921361
 RectTransform:
   m_ObjectHideFlags: 0
@@ -690,6 +695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 369529587}
+  gameManager: {fileID: 851546560}
 --- !u!1 &750054889
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,6 +832,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4030075694309165277, guid: fa39947ee5f21274889f6ef79da97fe8, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 851546560}
     - target: {fileID: 211519521482625923, guid: fa39947ee5f21274889f6ef79da97fe8, type: 3}
       propertyPath: m_RootOrder
       value: 7

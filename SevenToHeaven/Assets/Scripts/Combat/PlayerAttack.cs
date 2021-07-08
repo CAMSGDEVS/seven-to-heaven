@@ -47,6 +47,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField]
     private float hitInvincibility = 0.5f;
     private float invincibilityTimePassed = 0.5f;
+    [SerializeField]
+    private GameManager gameManager;
 
     public Rigidbody2D rb2d { get; private set; }
 
@@ -151,7 +153,7 @@ public class PlayerAttack : MonoBehaviour
             }
 
             if (dead == false) { // Prevent Lose from being called multiple times
-                GameManager.Instance.Lose();
+                gameManager.Lose();
                 dead = true;
             }
         }
