@@ -91,7 +91,6 @@ public class DirectionAnimations : MonoBehaviour
 
     private void CheckIfOnGround() {
         sevenGameObject.transform.localPosition = Vector3.zero;
-        Debug.Log(transform.position.y + " " + previousYPos);
         if (transform.position.y == previousYPos) {
             onGround = true;
         } else {
