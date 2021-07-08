@@ -17,7 +17,8 @@ public class Fade : MonoBehaviour
     public void FadeObject() { //Call on update to fade
         timePassed += Time.deltaTime;
         Color spriteColor = gameObject.GetComponent<SpriteRenderer>().color;
-        float fade = originalColor.a * ((despawnSeconds - timePassed) / despawnSeconds);
+
+        float fade = originalColor.a * 0.125f + 0.875f * originalColor.a * ((despawnSeconds - timePassed) / despawnSeconds);
         spriteColor = new Color(spriteColor.r, spriteColor.g, spriteColor.b, fade);
         gameObject.GetComponent<SpriteRenderer>().color = spriteColor;
         if (timePassed >= despawnSeconds) {

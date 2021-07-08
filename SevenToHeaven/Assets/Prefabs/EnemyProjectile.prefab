@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   rb2d: {fileID: 0}
-  speed: 3
+  speed: 2
   rotationSpeed: 200
   damage: 1
   playerProjectile: 0
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d373b1c0b63eb024fb57403eef849c70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  despawnSeconds: 5
+  despawnSeconds: 2
   timePassed: 0
   fadeActive: 1
   fadeEnded: 0

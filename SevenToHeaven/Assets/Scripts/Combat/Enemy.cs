@@ -49,9 +49,7 @@ public class Enemy : HomingObject
     }
 
     public void CalculateDistanceFromPlayer() {
-        DistanceFromPlayer = Mathf.Sqrt(
-            Mathf.Pow(PlayerMovement.Instance.rb2d.position.x - rb2d.position.x, 2) + 
-            Mathf.Pow(PlayerMovement.Instance.rb2d.position.y - rb2d.position.y, 2)); //Distance formula
+        DistanceFromPlayer = Vector3.Distance(PlayerMovement.Instance.rb2d.position, rb2d.position);
     }
 
     private void TargetPlayer() {

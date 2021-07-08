@@ -30,28 +30,27 @@ public class DirectionAnimations : MonoBehaviour
     private int rotateFrameCycle = 0;
     private bool inRotationFrameGroupOne = false;
 
+    private float previousYPos = 0;
+    private int cycleFrame = 0;
+
     public const int maxSpeed = 10;
 
     private bool onGround = false;
 
     private void Awake() {
+        //Initialize Variables
         sevenSpriteR = sevenGameObject.GetComponent<SpriteRenderer>();
         rb2d = gameObject.GetComponent<Rigidbody2D>();
-        for (int i = 0; i < 8; i++) {
-            if (i != 6) {
-                sevenFlyingSprites.Add(Resources.Load<Sprite>("Seven/Moving/seven_" + System.Convert.ToString(i * 15)));
-            } else {
-                sevenFlyingSprites.Add(null);
-            }
-        }
-        for (int i = 0; i < 3; i++) {
-            sevenNeutralSprites.Add(Resources.Load<Sprite>("Seven/Neutral/seven_drop_anim_frame_0" + System.Convert.ToString(i + 1)));
-        }
-        for (int i = 0; i < 4; i++) {
-            sevenIdleSprites.Add(Resources.Load<Sprite>("Seven/Idle/seven_idle_" + System.Convert.ToString(i + 1)));
-        }
-        sevenFlyingTransitionSprites.Add(Resources.Load<Sprite>("Seven/Moving/seven_go_down"));
-        sevenFlyingTransitionSprites.Add(Resources.Load<Sprite>("Seven/Moving/seven_back_up"));
+        
+        //Load sprites
+        sevenFlyingSprites.AddRange(Resources.LoadAll<Sprite>("Seven/Moving/"));
+        sevenFlyingSprites.Insert(6, null);
+        sevenNeutralSprites.AddRange(Resources.LoadAll<Sprite>("Seven/Neutral/"));
+        sevenIdleSprites.AddRange(Resources.LoadAll<Sprite>("Seven/Idle/"));
+        sevenFlyingTransitionSprites.Add(Resources.Load<Sprite>("Seven/Transition/seven_go_down"));
+        sevenFlyingTransitionSprites.Add(Resources.Load<Sprite>("Seven/Transition/seven_back_up"));
+
+        //Hard-coded lists for animations
         sevenNeutralSpriteIndices.AddRange(Enumerable.Repeat(0, 7)
                                  .Concat(Enumerable.Repeat(1, 6)
                                  .Concat(Enumerable.Repeat(2, 10)
@@ -63,7 +62,7 @@ public class DirectionAnimations : MonoBehaviour
                                       .Concat(Enumerable.Repeat(-1/32f, 7).ToList()
                                       .Concat(new[] { 0f })))));
         sevenNeutralHorizontalSpriteTranslations.AddRange(Enumerable.Repeat(0f, 13).ToList()
-                                      .Concat(Enumerable.Repeat(1 / 16f, 10).ToList()
+                                      .Concat(Enumerable.Repeat(1 / 32f, 10).ToList()
                                       .Concat(Enumerable.Repeat(0f, 8).ToList())));
         sevenIdleSpriteIndices.AddRange(Enumerable.Repeat(0, 6)
                               .Concat(Enumerable.Repeat(1, 4)
@@ -72,14 +71,13 @@ public class DirectionAnimations : MonoBehaviour
                               .Concat(Enumerable.Repeat(2, 4)
                               .Concat(Enumerable.Repeat(1, 6)
                               .Concat(new[] { 0 })))))).ToList());
-                                      
-        
     }
-    private void FixedUpdate() {
+
+    private void FixedUpdate() { //Update the sprite every 2 frames
         frameCycle = (frameCycle + 1) % 2;
         if (frameCycle == 1) {
-            onGround = PlayerMovement.Instance.onGround;
-            if (!onGround) {
+            CheckIfOnGround();
+            if (!onGround) { //Switch to idle animation if on ground
                 if (!PlayerMovement.Instance.windIsBlowing) {
                     NeutralAnimation();
                 } else {
@@ -90,24 +88,39 @@ public class DirectionAnimations : MonoBehaviour
             }
         }
     }
-    private void NeutralAnimation() {
-        if (previousAnimationType != 0) {
+
+    private void CheckIfOnGround() {
+        sevenGameObject.transform.localPosition = Vector3.zero;
+        Debug.Log(transform.position.y + " " + previousYPos);
+        if (transform.position.y == previousYPos) {
+            onGround = true;
+        } else {
+            onGround = false;
+        }
+        previousYPos = (float) transform.position.y;
+        
+    }
+
+    private void NeutralAnimation() { //Animation when seven is in the air but not being blown
+        if (previousAnimationType != 0) { //Reset animation cycle when changing animations
             previousAnimationType = 0;
             animationCycle = 0;
         }
+        //Slightly change position so the balloon looks like the center of gravity
         sevenGameObject.transform.localPosition = new Vector3(sevenNeutralHorizontalSpriteTranslations[animationCycle], sevenNeutralVerticalSpriteTranslations[animationCycle]);
+        
         sevenSpriteR.sprite = sevenNeutralSprites[sevenNeutralSpriteIndices[animationCycle]];
         animationCycle = (animationCycle + 1) % 31;
     }
-    private void IdleAnimation() {
-        if (previousAnimationType != 1) {
+    private void IdleAnimation() { //Animation when seven is on the ground
+        if (previousAnimationType != 1) { //Reset animation cycle when changing animations
             previousAnimationType = 1;
             animationCycle = 0;
         }
         sevenSpriteR.sprite = sevenIdleSprites[sevenIdleSpriteIndices[animationCycle]];
         animationCycle = (animationCycle + 1) % 33;
     }
-    private void AngledAnimation() {
+    private void AngledAnimation() { //Animation when seven is in the air and being blown
         int velocity = (int) Mathf.Sqrt(Mathf.Pow(rb2d.velocity.x, 2) + Mathf.Pow(rb2d.velocity.y, 2));
         if (velocity <= 0) velocity = 1;
         rotateFrameCycle = (rotateFrameCycle + 1) % (maxSpeed/velocity);
@@ -148,22 +161,21 @@ public class DirectionAnimations : MonoBehaviour
                     } else {
                         sevenSpriteR.sprite = sevenFlyingSprites[5];
                     }
-                    
                 }
             } else { 
                 sevenSpriteR.sprite = spriteIndex switch { //Lower angle's sprite when in frame group 2 (except for sprite 0 and 7, as -1 and 6 are null)
-                    0 => sevenFlyingSprites[0],
+                    0 => sevenFlyingSprites[1],
                     7 => sevenFlyingSprites[7],
                     6 => (goingUp ? sevenFlyingSprites[7] : sevenFlyingSprites[4]),
                     int n when n>0 && n<7  => sevenFlyingSprites[spriteIndex - 1],
                     _ => sevenFlyingSprites[0] //Should never occur
                 };
-
             }
             if (spriteIndex != 6) { //Resets the transition animation's frame count
                 transitionFrames = 0;
             }
         }
+        //GoingUp if index = 7 or outside of a transition animation
         if (spriteIndex == 7 || (spriteIndex == 6 && (transitionFrames == 0 || transitionFrames == 5))) {
             goingUp = true;
         } else {
@@ -173,7 +185,7 @@ public class DirectionAnimations : MonoBehaviour
 
     private int AngleToIndex(float angle) {
         int index = (int) Mathf.Floor(angle / 15);
-        if (index > 7) {
+        if (index > 7) { //Values above 7 are mapped back to 7
             index = 7;
         }
         return index;
