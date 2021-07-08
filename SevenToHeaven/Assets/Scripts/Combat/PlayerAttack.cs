@@ -57,6 +57,8 @@ public class PlayerAttack : MonoBehaviour
     private bool dead = false;
 
     private void Awake() {
+        _playerProjectiles.Clear();
+        _enemyList.Clear();
         PlayerAttack._instance = this;
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         invincibilityTimePassed = hitInvincibility;
