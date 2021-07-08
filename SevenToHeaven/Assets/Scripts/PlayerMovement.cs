@@ -20,7 +20,6 @@ public class PlayerMovement : MonoBehaviour {
     public Rigidbody2D rb2d { get; private set; }
     public bool windIsBlowing { get; private set; }
 
-    public bool onGround;
     private void Awake() { // Initialize variables
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;

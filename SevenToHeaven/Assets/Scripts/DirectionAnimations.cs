@@ -31,7 +31,6 @@ public class DirectionAnimations : MonoBehaviour
     private bool inRotationFrameGroupOne = false;
 
     private float previousYPos = 0;
-    private int cycleFrame = 0;
 
     public const int maxSpeed = 10;
 
@@ -89,7 +88,7 @@ public class DirectionAnimations : MonoBehaviour
         }
     }
 
-    private void CheckIfOnGround() {
+    private void CheckIfOnGround() { //Checks if the player is on the ground (y-position is static)
         sevenGameObject.transform.localPosition = Vector3.zero;
         if (transform.position.y == previousYPos) {
             onGround = true;
