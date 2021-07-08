@@ -7,9 +7,6 @@ public class OpenDoor : MonoBehaviour {
 
     [SerializeField]
     private Text text;
-    [SerializeField]
-    GameManager gameManager;
-
 
     private LevelDoor levelDoor;
     private bool isCurrentDoorOpen;
@@ -22,7 +19,7 @@ public class OpenDoor : MonoBehaviour {
 
     IEnumerator WaitForWinAnim() {
         yield return new WaitForSeconds(3f);
-        gameManager.Win();
+        GameManager.Instance.Win();
     }
 
     private void Update() {
@@ -46,28 +43,19 @@ public class OpenDoor : MonoBehaviour {
     private void FixedUpdate() {
         RaycastHit hit;
         isCurrentDoorOpen = false;
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit)) {
-            levelDoor = hit.transform.GetComponent<LevelDoor>();
-            if (gameManager != null) {
-                if (!gameManager.gameLost) {
-                    if (levelDoor.isUnlocked == true) {
-                        text.text = "Press [SPACE] to enter";
-                        isCurrentDoorOpen = true;
-                    } else {
-                        text.text = "This door is locked";
-                    }
-                }
-            } else {
+        if (!GameManager.Instance.gameLost) {
+            if (Physics.Raycast(transform.position, Vector3.forward, out hit)) {
+                levelDoor = hit.transform.GetComponent<LevelDoor>();
                 if (levelDoor.isUnlocked == true) {
                     text.text = "Press [SPACE] to enter";
                     isCurrentDoorOpen = true;
                 } else {
                     text.text = "This door is locked";
                 }
+            } else {
+                text.text = "";
             }
-        }/* else
-            text.text = "";
-*/
+        }
     }
 
 }

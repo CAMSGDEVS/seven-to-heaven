@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,9 +25,6 @@ public class Enemy : HomingObject
     private float visionLength = 5f;
     [SerializeField]
     private float projectileVisionLength = 4f;
-
-    [SerializeField]
-    GameManager gameManager;
 
     private void Awake() { // Initialize values 
         rb2d = gameObject.GetComponent<Rigidbody2D>();
@@ -105,8 +101,8 @@ public class Enemy : HomingObject
                 }
                 projectiles.Clear();
                 PlayerAttack.EnemyList.Remove(this);
-                gameManager.statList["Kills"] += 1;
-                gameManager.statList["Points"] += 10;
+                GameManager.Instance.statList["Kills"] += 1;
+                GameManager.Instance.statList["Points"] += 10;
                 GameObject.Destroy(gameObject);
             }
         }

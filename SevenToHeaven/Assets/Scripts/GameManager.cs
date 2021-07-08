@@ -5,6 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
+    private static GameManager _instance;
+    public static GameManager Instance {
+        get {
+            if (_instance == null) {
+                Debug.LogError("GameManager is null");
+            }
+            return _instance;
+        }
+        set { }
+    }
+
     [SerializeField]
     private GameObject loseCanvas, winCanvas, statTemplateHolder;
 
@@ -43,5 +54,9 @@ public class GameManager : MonoBehaviour {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+    }
+
+    private void Awake() {
+        _instance = this;
     }
 }
