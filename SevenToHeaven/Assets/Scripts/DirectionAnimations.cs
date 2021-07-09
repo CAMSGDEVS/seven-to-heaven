@@ -74,11 +74,7 @@ public class DirectionAnimations : MonoBehaviour
     private int rotateFrameCycle = 0;
     private bool inRotationFrameGroupOne = false;
 
-    private float previousYPos = 0;
-
     public const int maxSpeed = 10;
-
-    private bool onGround = false;
 
     private void Awake() {
         //Initialize Variables
@@ -154,6 +150,7 @@ public class DirectionAnimations : MonoBehaviour
         sevenSpriteR.sprite = sevenNeutralSprites[sevenNeutralSpriteIndices[animationCycle]];
         animationCycle = (animationCycle + 1) % sevenNeutralSpriteIndices.Count;
     }
+
     private void IdleAnimation() { //Animation when seven is on the ground
         if (previousAnimationType != 1) { //Reset animation cycle when changing animations
             previousAnimationType = 1;
@@ -166,10 +163,12 @@ public class DirectionAnimations : MonoBehaviour
             balloonColliders[i].offset = originalColliderOffsets[2 * (i) + 1] - new Vector2(sevenNeutralHorizontalSpriteTranslations[animationCycle], sevenNeutralVerticalSpriteTranslations[animationCycle]); 
         }
     }
+
     private void AngledAnimation() { //Animation when seven is in the air and being blown
         int velocity = (int) Mathf.Sqrt(Mathf.Pow(rb2d.velocity.x, 2) + Mathf.Pow(rb2d.velocity.y, 2));
         if (velocity <= 0) velocity = 1;
-        rotateFrameCycle = (rotateFrameCycle + 1) % (maxSpeed/velocity);
+        rotateFrameCycle = System.Convert.ToInt32((rotateFrameCycle + 1) % ((float) maxSpeed / (float) velocity));
+        
         if (velocity > maxSpeed/2 || rotateFrameCycle == Mathf.RoundToInt((maxSpeed/velocity)/2)) {
             inRotationFrameGroupOne = !inRotationFrameGroupOne;
         }
