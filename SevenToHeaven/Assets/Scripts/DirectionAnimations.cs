@@ -22,6 +22,11 @@ public class DirectionAnimations : MonoBehaviour
     private List<Sprite> sevenIdleSprites = new List<Sprite>();
     private List<int> sevenIdleSpriteIndices = new List<int>();
 
+    private List<BoxCollider2D> sevenColliders = new List<BoxCollider2D>();
+    private List<CapsuleCollider2D> balloonColliders = new List<CapsuleCollider2D>();
+
+    private List<Vector2> originalColliderOffsets = new List<Vector2>();
+
     private bool goingUp = false;
     private int transitionFrames = 0;
     private int animationCycle = 0;
@@ -37,10 +42,14 @@ public class DirectionAnimations : MonoBehaviour
     private bool onGround = false;
 
     private void Awake() {
+        
         //Initialize Variables
         sevenSpriteR = sevenGameObject.GetComponent<SpriteRenderer>();
         rb2d = gameObject.GetComponent<Rigidbody2D>();
-        
+
+        sevenColliders = gameObject.GetComponents<BoxCollider2D>().ToList();
+        balloonColliders = gameObject.GetComponents<CapsuleCollider2D>().ToList();
+
         //Load sprites
         sevenFlyingSprites.AddRange(Resources.LoadAll<Sprite>("Seven/Moving/"));
         sevenFlyingSprites.Insert(6, null);
@@ -48,6 +57,12 @@ public class DirectionAnimations : MonoBehaviour
         sevenIdleSprites.AddRange(Resources.LoadAll<Sprite>("Seven/Idle/"));
         sevenFlyingTransitionSprites.Add(Resources.Load<Sprite>("Seven/Transition/seven_go_down"));
         sevenFlyingTransitionSprites.Add(Resources.Load<Sprite>("Seven/Transition/seven_back_up"));
+
+        for (int i = 0; i < sevenColliders.Count; i++) {
+            originalColliderOffsets.Add(sevenColliders[i].offset);
+            originalColliderOffsets.Add(balloonColliders[i].offset);
+        }
+        
 
         //Hard-coded lists for animations
         sevenNeutralSpriteIndices.AddRange(Enumerable.Repeat(0, 7)
@@ -74,22 +89,27 @@ public class DirectionAnimations : MonoBehaviour
 
     private void FixedUpdate() { //Update the sprite every 2 frames
         frameCycle = (frameCycle + 1) % 2;
-        if (frameCycle == 1) {
-            CheckIfOnGround();
-            if (!onGround) { //Switch to idle animation if on ground
-                if (!PlayerMovement.Instance.windIsBlowing) {
-                    NeutralAnimation();
-                } else {
+        if (!GameManager.Instance.gameLost) {
+            if (frameCycle == 1) {
+                CheckIfOnGround();
+                if (PlayerMovement.Instance.windIsBlowing) {
                     AngledAnimation();
+                } else if (onGround) {
+                    IdleAnimation();
+                } else {
+                    NeutralAnimation();
                 }
-            } else {
-                IdleAnimation();
             }
         }
+        
     }
 
     private void CheckIfOnGround() { //Checks if the player is on the ground (y-position is static)
         sevenGameObject.transform.localPosition = Vector3.zero;
+        for (int i = 0; i < sevenColliders.Count; i++) {
+            sevenColliders[i].offset = originalColliderOffsets[2 * (i)];
+            balloonColliders[i].offset = originalColliderOffsets[2 * (i) + 1];
+        }
         if (transform.position.y == previousYPos) {
             onGround = true;
         } else {
@@ -106,7 +126,12 @@ public class DirectionAnimations : MonoBehaviour
         }
         //Slightly change position so the balloon looks like the center of gravity
         sevenGameObject.transform.localPosition = new Vector3(sevenNeutralHorizontalSpriteTranslations[animationCycle], sevenNeutralVerticalSpriteTranslations[animationCycle]);
-        
+
+        for (int i = 0; i < sevenColliders.Count; i++) {
+            sevenColliders[i].offset = originalColliderOffsets[2 * (i)] + new Vector2(sevenNeutralHorizontalSpriteTranslations[animationCycle], sevenNeutralVerticalSpriteTranslations[animationCycle]);
+            balloonColliders[i].offset = originalColliderOffsets[2 * (i) + 1];
+        }
+
         sevenSpriteR.sprite = sevenNeutralSprites[sevenNeutralSpriteIndices[animationCycle]];
         animationCycle = (animationCycle + 1) % 31;
     }
@@ -117,6 +142,10 @@ public class DirectionAnimations : MonoBehaviour
         }
         sevenSpriteR.sprite = sevenIdleSprites[sevenIdleSpriteIndices[animationCycle]];
         animationCycle = (animationCycle + 1) % 33;
+        for (int i = 0; i < sevenColliders.Count; i++) {
+            sevenColliders[i].offset = originalColliderOffsets[2 * (i)];
+            balloonColliders[i].offset = originalColliderOffsets[2 * (i) + 1] - new Vector2(sevenNeutralHorizontalSpriteTranslations[animationCycle], sevenNeutralVerticalSpriteTranslations[animationCycle]); 
+        }
     }
     private void AngledAnimation() { //Animation when seven is in the air and being blown
         int velocity = (int) Mathf.Sqrt(Mathf.Pow(rb2d.velocity.x, 2) + Mathf.Pow(rb2d.velocity.y, 2));
