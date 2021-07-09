@@ -11,11 +11,10 @@ GameObject:
   - component: {fileID: 211519521482625923}
   - component: {fileID: 8085819629864133105}
   - component: {fileID: -6033388401832542083}
-  - component: {fileID: -4030075694309165277}
-  - component: {fileID: 276158999237753203}
-  - component: {fileID: 8264246792313733586}
+  - component: {fileID: 9024802344598165306}
+  - component: {fileID: -2330325035129428606}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Spike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 4781952980746229397}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -75,8 +74,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 4e450c19a5eb7c345bf7b8e88d5f4c70, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  m_Color: {r: 0.4339623, g: 0.41276187, b: 0.39506945, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -102,12 +101,28 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 6200000, guid: f2ebc48bdcfa94043a46a51aa990f9de, type: 2}
+  m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!114 &-4030075694309165277
+  m_Constraints: 7
+--- !u!58 &9024802344598165306
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4781952980746229397}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!114 &-2330325035129428606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,48 +136,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   rb2d: {fileID: 0}
-  speed: 1.5
-  rotationSpeed: 200
+  speed: 0
+  rotationSpeed: 0
   projectiles: []
-  enemyProjectilePrefab: {fileID: 4781952980746229397, guid: a449c99a06c579841b3f8d836280ab80, type: 3}
+  enemyProjectilePrefab: {fileID: 0}
   attackMelee: 1
   meleeDamage: 1
   shootsProjectiles: 0
-  projectileSpacingFromPlayer: 1
-  health: 3
-  fireCooldown: 3
-  TargettingPlayer: 1
-  visionLength: 10
-  projectileVisionLength: 4
---- !u!58 &276158999237753203
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4781952980746229397}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.43
---- !u!58 &8264246792313733586
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4781952980746229397}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: f2ebc48bdcfa94043a46a51aa990f9de, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.42
+  projectileSpacingFromPlayer: 0
+  health: 0
+  fireCooldown: 0
+  invulnerable: 1
+  TargettingPlayer: 0
+  visionLength: 0
+  projectileVisionLength: 0

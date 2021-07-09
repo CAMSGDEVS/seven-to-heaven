@@ -112,6 +112,7 @@ public class PlayerAttack : MonoBehaviour
                 enemiesInRange.Add(enemy);
             }
         }
+
         enemiesInRange = enemiesInRange.OrderBy(enemy => enemy.DistanceFromPlayer).ToList();
     }
 

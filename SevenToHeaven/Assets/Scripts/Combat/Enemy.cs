@@ -18,6 +18,8 @@ public class Enemy : HomingObject
     [SerializeField]
     private float fireCooldown = 3f;
     private float timeSinceLastFire = 0f;
+    [SerializeField]
+    private bool invulnerable = false;
     public float DistanceFromPlayer { get; private set; }
     public bool TargettingPlayer = true;
 
@@ -30,7 +32,9 @@ public class Enemy : HomingObject
         rb2d = gameObject.GetComponent<Rigidbody2D>();
     }
     private void Start() {
-        PlayerAttack.EnemyList.Add(this);
+        if (!invulnerable) {
+            PlayerAttack.EnemyList.Add(this);
+        }
     }
     private void Update() {
         if (PlayerAttack.Instance != null) {
@@ -44,14 +48,18 @@ public class Enemy : HomingObject
         }
     }
 
-    public void CalculateDistanceFromPlayer() {
-        DistanceFromPlayer = Vector3.Distance(PlayerMovement.Instance.rb2d.position, rb2d.position);
+    public float CalculateDistanceFromPlayer() {
+        return Vector3.Distance(PlayerMovement.Instance.rb2d.position, rb2d.position);
     }
 
     private void TargetPlayer() {
-        CalculateDistanceFromPlayer();
+        DistanceFromPlayer = CalculateDistanceFromPlayer();
         if (TargettingPlayer) {
-            ShootProjectile();
+            if (timeSinceLastFire >= fireCooldown) {
+                if (shootsProjectiles && DistanceFromPlayer <= projectileVisionLength) {
+                    ShootProjectile();
+                }
+            }
             if (DistanceFromPlayer <= visionLength) {
                 target = PlayerAttack.Instance.gameObject;
                 MoveTowardsTarget();
@@ -68,42 +76,40 @@ public class Enemy : HomingObject
         }
     }
     private void ShootProjectile() {
-        if (timeSinceLastFire >= fireCooldown) {
-            if (shootsProjectiles && DistanceFromPlayer <= projectileVisionLength) {
-                GameObject projectile = Instantiate(enemyProjectilePrefab, gameObject.transform.position, Quaternion.identity);
-                Projectile projectileComponent = projectile.GetComponent<Projectile>();
-                projectiles.Add(projectileComponent);
-                projectileComponent.source = gameObject;
-                projectileComponent.playerProjectile = false;
-                projectileComponent.target = PlayerAttack.Instance.gameObject;
-                timeSinceLastFire = 0f;
-                projectile.transform.rotation = gameObject.transform.rotation;
-            }
-        }
+        GameObject projectile = Instantiate(enemyProjectilePrefab, gameObject.transform.position, Quaternion.identity);
+        Projectile projectileComponent = projectile.GetComponent<Projectile>();
+        projectiles.Add(projectileComponent);
+        projectileComponent.source = gameObject;
+        projectileComponent.playerProjectile = false;
+        projectileComponent.target = PlayerAttack.Instance.gameObject;
+        timeSinceLastFire = 0f;
+        projectile.transform.rotation = gameObject.transform.rotation;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        Projectile projectile = collision.gameObject.GetComponent<Projectile>();
-        if (projectile != null && projectile.playerProjectile) {
-            health -= projectile.damage;
-            PlayerAttack.PlayerProjectiles.Remove(projectile);
-            GameObject.Destroy(projectile.gameObject);
-            if (health <= 0) {
-                foreach (Projectile proj in PlayerAttack.PlayerProjectiles) {
-                    if (proj.target = gameObject) {
-                        proj.fader.timePassed = proj.fader.despawnSeconds - 0.125f*(proj.fader.despawnSeconds - proj.fader.timePassed);
+        if (!invulnerable) {
+            Projectile projectile = collision.gameObject.GetComponent<Projectile>();
+            if (projectile != null && projectile.playerProjectile) {
+                health -= projectile.damage;
+                PlayerAttack.PlayerProjectiles.Remove(projectile);
+                GameObject.Destroy(projectile.gameObject);
+                if (health <= 0) {
+                    foreach (Projectile proj in PlayerAttack.PlayerProjectiles) {
+                        if (proj.target = gameObject) {
+                            proj.fader.timePassed = proj.fader.despawnSeconds - 0.125f*(proj.fader.despawnSeconds - proj.fader.timePassed);
+                        }
                     }
-                }
-                foreach (Projectile proj in projectiles) {
-                    if (proj != null) {
-                        GameObject.Destroy(proj.gameObject);
+                    foreach (Projectile proj in projectiles) {
+                        if (proj != null) {
+                            GameObject.Destroy(proj.gameObject);
+                        }
                     }
+                    projectiles.Clear();
+                    PlayerAttack.EnemyList.Remove(this);
+                    GameManager.Instance.statList["Kills"] += 1;
+                    GameManager.Instance.statList["Points"] += 10;
+                    GameObject.Destroy(gameObject);
                 }
-                projectiles.Clear();
-                PlayerAttack.EnemyList.Remove(this);
-                GameManager.Instance.statList["Kills"] += 1;
-                GameManager.Instance.statList["Points"] += 10;
-                GameObject.Destroy(gameObject);
             }
         }
     }
