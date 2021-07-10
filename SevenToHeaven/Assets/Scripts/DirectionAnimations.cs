@@ -27,6 +27,8 @@ public class DirectionAnimations : MonoBehaviour
     [SerializeField]
     private List<CapsuleCollider2D> balloonColliders = new List<CapsuleCollider2D>();
 
+    private bool previousYVelocityZero = false;
+
     private List<Vector2> originalColliderOffsets = new List<Vector2>();
 
     private List<Vector2> angledBalloonOffsets = new List<Vector2>() {
@@ -73,6 +75,8 @@ public class DirectionAnimations : MonoBehaviour
     private int frameCycle = 0;
     private int rotateFrameCycle = 0;
     private bool inRotationFrameGroupOne = false;
+    private int velocity;
+    private float angle;
 
     public const int maxSpeed = 10;
 
@@ -117,21 +121,25 @@ public class DirectionAnimations : MonoBehaviour
                               .Concat(Enumerable.Repeat(1, 6)
                               .Concat(new List<int> { 0 })))))).ToList());
     }
+    private void Update() {
 
+        UpdateFlip();
+    }
     private void FixedUpdate() { //Update the sprite every 2 frames
         frameCycle = (frameCycle + 1) % 2;
         if (!GameManager.Instance.gameLost) {
             if (frameCycle == 1) {
                 if (PlayerMovement.Instance.windIsBlowing) {
+                    UpdateAngle();
                     AngledAnimation();
-                } else if (rb2d.velocity.y == 0) {
+                } else if (rb2d.velocity.y == 0 && previousYVelocityZero) {
                     IdleAnimation();
                 } else {
                     NeutralAnimation();
                 }
             }
         }
-        
+        if (rb2d.velocity.y == 0) { previousYVelocityZero = true; } else { previousYVelocityZero = false; }
     }
 
     private void NeutralAnimation() { //Animation when seven is in the air but not being blown
@@ -165,19 +173,14 @@ public class DirectionAnimations : MonoBehaviour
     }
 
     private void AngledAnimation() { //Animation when seven is in the air and being blown
-        int velocity = (int) Mathf.Sqrt(Mathf.Pow(rb2d.velocity.x, 2) + Mathf.Pow(rb2d.velocity.y, 2));
+        velocity = (int)Mathf.Sqrt(Mathf.Pow(rb2d.velocity.x, 2) + Mathf.Pow(rb2d.velocity.y, 2));
         if (velocity <= 0) velocity = 1;
-        rotateFrameCycle = System.Convert.ToInt32((rotateFrameCycle + 1) % ((float) maxSpeed / (float) velocity));
-        
-        if (velocity > maxSpeed/2 || rotateFrameCycle == Mathf.RoundToInt((maxSpeed/velocity)/2)) {
+        rotateFrameCycle = System.Convert.ToInt32((rotateFrameCycle + 1) % ((float)maxSpeed / (float)velocity));
+
+        if (velocity > maxSpeed / 2 || rotateFrameCycle == Mathf.RoundToInt((maxSpeed / velocity) / 2)) {
             inRotationFrameGroupOne = !inRotationFrameGroupOne;
         }
         previousAnimationType = 2;
-
-        float angle = Mathf.Atan2(rb2d.velocity.y, rb2d.velocity.x)*180/(Mathf.PI);
-        if (angle > 90) angle = -1 * angle + 180; // Maps from 2nd quadrant to 1st quadrant (90 to 180) -> (90 to 0)
-        else if (angle < -90) angle = (-1 * angle - 180); // Maps from 3rd quadrant to 4th quadrant (-90 to -180) -> (-90 to 0)
-        angle = -1 * angle + 90; //Maps from (90 to -90) -> (0 to 180
 
         int spriteIndex = AngleToIndex(angle);
         int finalSpriteIndex;
@@ -206,7 +209,7 @@ public class DirectionAnimations : MonoBehaviour
                     0 => 1,
                     7 => 7,
                     6 => (goingUp ? 7 : 4),
-                    int n when n>0 && n<7  => spriteIndex-1,
+                    int n when n > 0 && n < 7 => spriteIndex - 1,
                     _ => 0 //Should never occur
                 };
             }
@@ -220,16 +223,17 @@ public class DirectionAnimations : MonoBehaviour
         } else {
             goingUp = false;
         }
-        
+
         if (finalSpriteIndex > 7) {
             sevenSpriteR.sprite = sevenFlyingTransitionSprites[finalSpriteIndex - 8];
         } else {
             sevenSpriteR.sprite = sevenFlyingSprites[finalSpriteIndex];
         }
-        
         AssignAngledColliders(finalSpriteIndex);
-        
-        //Flips sprite when heading left
+        UpdateFlip();
+    }
+
+    private void UpdateFlip() { //Flips sprite when heading left
         if (rb2d.velocity.x > 0) { 
             sevenSpriteR.flipX = false;
         } else {
@@ -239,6 +243,13 @@ public class DirectionAnimations : MonoBehaviour
                 balloonColliders[i].offset = Vector2.Scale(balloonColliders[i].offset, new Vector2(-1, 1));
             }
         }
+    }
+
+    private void UpdateAngle() {
+        angle = Mathf.Atan2(rb2d.velocity.y, rb2d.velocity.x) * 180 / (Mathf.PI);
+        if (angle > 90) angle = -1 * angle + 180; // Maps from 2nd quadrant to 1st quadrant (90 to 180) -> (90 to 0)
+        else if (angle < -90) angle = (-1 * angle - 180); // Maps from 3rd quadrant to 4th quadrant (-90 to -180) -> (-90 to 0)
+        angle = -1 * angle + 90; //Maps from (90 to -90) -> (0 to 180
     }
 
     private void AssignAngledColliders(int spriteIndex) {
