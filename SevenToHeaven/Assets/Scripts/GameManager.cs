@@ -21,15 +21,16 @@ public class GameManager : MonoBehaviour {
     }
 
     [SerializeField]
-    private GameObject loseCanvas, winCanvas, statTemplateHolder;
+    private GameObject loseCanvas, winCanvas, statTemplateHolder, sevenDeathPrefab;
 
     [SerializeField]
     private Text statTemplate, inGameText;
 
     public static int checkpointNumber = 0;
     public List<Checkpoint> Checkpoints = new List<Checkpoint>();
-
     public bool gameWon = false, gameLost = false;
+    private GameObject sevenDeath; // Holds the instantialized prefabs
+    
 
     public Dictionary<string, int> statList = new Dictionary<string, int>() {
         {"Points", 0},
@@ -44,13 +45,15 @@ public class GameManager : MonoBehaviour {
         winCanvas.SetActive(true); // Change to a smoother transition later if needed.
         inGameText.transform.gameObject.SetActive(false);
         gameWon = true;
-        foreach (var stat in statList) {
+        foreach (var stat in statList) { // Display the list of stats in UI from the statList dictionatry
             Text newStat = Instantiate(statTemplate, Vector3.zero, Quaternion.identity, statTemplateHolder.transform);
             newStat.text = stat.Key + ": " + stat.Value;
         }
     }
 
     public void RespawnSeven() {
+        seven.SetActive(true);
+        Destroy(sevenDeath);
         Checkpoint currentCheckpoint = null;
         foreach (Checkpoint checkpoint in Checkpoints) {
             if (checkpoint.checkpointNumber == checkpointNumber) {
@@ -73,6 +76,11 @@ public class GameManager : MonoBehaviour {
     public void Lose() {
         gameLost = true;
         inGameText.text = "Press [SPACE] to continue...";
+
+        sevenDeath = Instantiate(sevenDeathPrefab); // Instantiate GameObject to play Seven's death animation
+        sevenDeath.transform.position = seven.transform.position;
+
+        seven.SetActive(false); // Inactivate seven to prevent reference errors with Destory()
     }
 
     private void Update() {
