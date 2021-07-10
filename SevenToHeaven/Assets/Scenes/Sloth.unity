@@ -548,11 +548,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkpointPrefab: {fileID: 4781952980746229397, guid: 3110a421203017b43971fc1221e9037b, type: 3}
-  seven: {fileID: 0}
+  seven: {fileID: 8844216636202208470, guid: 40af13109088ab04ab05dda5ce89be3a, type: 3}
   respawnFinished: 0
   loseCanvas: {fileID: 0}
   winCanvas: {fileID: 361214505}
   statTemplateHolder: {fileID: 705223337}
+  sevenDeathPrefab: {fileID: 8834907895009991927, guid: 03e9f54b7a661334f8d693a252e84968, type: 3}
   statTemplate: {fileID: 3105850849465916856, guid: bc1f269e372e6564eb063415281311ed, type: 3}
   inGameText: {fileID: 369529587}
   Checkpoints: []
