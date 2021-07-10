@@ -1171,10 +1171,9 @@ PrefabInstance:
       propertyPath: signText
       value: 'Welcome to Seven to Heaven!
 
-        Press left click to blow seven
-        and space to interact with objects.
-
-        Go left for the tutorial!'
+        Can''t move? Easy! Guide the mouse
+        around while holding LMB to control the wind and move around. Go to the left
+        of the screen for some practice.'
       objectReference: {fileID: 0}
     - target: {fileID: 7833438412507395282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
       propertyPath: m_Name
