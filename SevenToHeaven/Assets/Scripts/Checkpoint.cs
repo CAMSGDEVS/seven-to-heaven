@@ -30,6 +30,13 @@ public class Checkpoint : MonoBehaviour
     }
 
     private IEnumerator RespawnSevenCoroutine() {
+
+        CameraMovement.Instance.target = transform;
+        if (GameManager.Instance.transitionPrefab != null && GameManager.statList["Deaths"] == 0) {
+            GameObject transition = Instantiate(GameManager.Instance.transitionPrefab, Vector2.zero, Quaternion.identity);
+            yield return new WaitForSeconds(GameManager.Instance.transitionTime);
+            Destroy(transition);
+        }
         GameObject respawnAnimation = Instantiate(respawnAnimationPrefab, gameObject.transform.position, Quaternion.identity);
         yield return new WaitForSeconds(1);
         GameManager.Instance.seven = Instantiate(sevenPrefab, gameObject.transform.position, Quaternion.identity);
@@ -37,7 +44,7 @@ public class Checkpoint : MonoBehaviour
         GameManager.Instance.respawnFinished = true;
         CameraMovement.Instance.target = GameManager.Instance.seven.transform;
         Destroy(respawnAnimation);
-        
-        
     }
+
+
 }

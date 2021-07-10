@@ -3,11 +3,16 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System.Collections;
 
 public class GameManager : MonoBehaviour {
+    public GameObject transitionPrefab;
+    public float transitionTime;
+
     public GameObject checkpointPrefab;
     public GameObject seven;
     public bool respawnFinished = false;
+    public static bool tutorialFinished = false;
 
     private static GameManager _instance;
     public static GameManager Instance {
@@ -69,6 +74,9 @@ public class GameManager : MonoBehaviour {
             Text newStat = Instantiate(statTemplate, Vector3.zero, Quaternion.identity, statTemplateHolder.transform);
             newStat.text = stat.Key + ": " + stat.Value;
         }
+
+        //Temporary for demo
+        tutorialFinished = true;
     }
 
     public void RespawnSeven() {
@@ -110,6 +118,7 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown("space")) {
             if (gameWon) {
                 // Show end of demo UI
+                ResetVars();
                 SceneManager.LoadScene("LevelSelect");
             }
             if (gameLost) {
