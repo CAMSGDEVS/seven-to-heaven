@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class Enemy : HomingObject
 {
+    [SerializeField]
+    private EnemyBoundingBox boundingBox;
+    private float length, width;
+
     public List<Projectile> projectiles;
     [SerializeField]
     private GameObject enemyProjectilePrefab;
@@ -30,10 +34,12 @@ public class Enemy : HomingObject
 
     private void Awake() { // Initialize values 
         rb2d = gameObject.GetComponent<Rigidbody2D>();
+        length = transform.lossyScale.x/2;
+        width = transform.lossyScale.y/2;
     }
     private void Start() {
         if (!invulnerable) {
-            PlayerAttack.EnemyList.Add(this);
+            GameManager.EnemyList.Add(this);
         }
     }
     private void Update() {
@@ -47,6 +53,27 @@ public class Enemy : HomingObject
             if (timeSinceLastFire < fireCooldown) {
                 timeSinceLastFire += Time.deltaTime;
             }
+        }
+    }
+    private void FixedUpdate() {
+        CheckIfOutsideBoundingBox();
+    }
+
+    private void CheckIfOutsideBoundingBox() {
+        if (boundingBox != null) {
+            float x = transform.position.x;
+            float y = transform.position.y;
+            if (x < boundingBox.xLeft + length) {
+                x = boundingBox.xLeft + length;
+            } else if (x > boundingBox.xRight - length) {
+                x = boundingBox.xRight - length;
+            }
+            if (y < boundingBox.yBottom + width) {
+                y = boundingBox.yBottom + width;
+            } else if (y > boundingBox.yTop - width) {
+                y = boundingBox.yTop - width;
+            }
+            transform.position = new Vector3(x, y);
         }
     }
 
@@ -84,6 +111,7 @@ public class Enemy : HomingObject
         projectileComponent.source = gameObject;
         projectileComponent.playerProjectile = false;
         projectileComponent.target = PlayerAttack.Instance.gameObject;
+        projectileComponent.boundingBox = boundingBox;
         timeSinceLastFire = 0f;
         projectile.transform.rotation = gameObject.transform.rotation;
     }
@@ -92,7 +120,7 @@ public class Enemy : HomingObject
         if (!invulnerable) {
             Projectile projectile = collision.gameObject.GetComponent<Projectile>();
             if (projectile != null && projectile.playerProjectile) {
-                health -= projectile.damage;
+                health -= projectile.damage/2;
                 PlayerAttack.PlayerProjectiles.Remove(projectile);
                 GameObject.Destroy(projectile.gameObject);
                 if (health <= 0) {
@@ -107,10 +135,10 @@ public class Enemy : HomingObject
                         }
                     }
                     projectiles.Clear();
-                    PlayerAttack.EnemyList.Remove(this);
-                    GameManager.Instance.statList["Kills"] += 1;
-                    GameManager.Instance.statList["Points"] += 10;
-                    GameObject.Destroy(gameObject);
+                    GameManager.EnemyList.Remove(this);
+                    GameManager.statList["Kills"] += 1;
+                    GameManager.statList["Points"] += 10;
+                    Destroy(gameObject);
                 }
             }
         }

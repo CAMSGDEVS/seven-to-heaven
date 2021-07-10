@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 
 public class CameraMovement : MonoBehaviour {
-
     private static CameraMovement _instance;
     public static CameraMovement Instance {
         get {
@@ -15,8 +14,8 @@ public class CameraMovement : MonoBehaviour {
     }
     public Transform target;
 
-    [SerializeField]
-    private Transform anchor;
+    public Transform anchor;
+    public Transform alternateTarget;
 
     public IEnumerator Shake (float duration, float magnitude) {
         float elapsed = 0.0f;
@@ -39,7 +38,9 @@ public class CameraMovement : MonoBehaviour {
         target = GameManager.Instance.transform;
     }
     private void LateUpdate() {
-        if (GameManager.Instance.respawnFinished) {
+        if (alternateTarget != null) {
+            target = alternateTarget;
+        } else if (GameManager.Instance.respawnFinished) {
             target = GameManager.Instance.seven.transform;
         }
         anchor.position = new Vector3(target.position.x, target.position.y, -10f); // Lock z-axis

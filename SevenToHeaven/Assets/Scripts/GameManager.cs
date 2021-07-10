@@ -19,24 +19,44 @@ public class GameManager : MonoBehaviour {
         }
         set { }
     }
+    private static List<Enemy> _enemyList = new List<Enemy>();
+    public static List<Enemy> EnemyList {
+        get {
+            if (_enemyList == null) {
+                Debug.LogError("EnemyList is null");
+            }
+            return _enemyList;
+        }
+        set { }
+    }
+
+    public List<Sign> signs = new List<Sign>();
 
     [SerializeField]
     private GameObject loseCanvas, winCanvas, statTemplateHolder, sevenDeathPrefab;
 
     [SerializeField]
-    private Text statTemplate, inGameText;
+    private Text statTemplate; 
+    public Text inGameText;
 
     public static int checkpointNumber = 0;
     public List<Checkpoint> Checkpoints = new List<Checkpoint>();
     public bool gameWon = false, gameLost = false;
     private GameObject sevenDeath; // Holds the instantialized prefabs
-    
 
-    public Dictionary<string, int> statList = new Dictionary<string, int>() {
+    public static Dictionary<string, int> statList = new Dictionary<string, int>() {
         {"Points", 0},
         {"Kills", 0},
+        {"Deaths",0}
     };
 
+    public void ResetVars() {
+        checkpointNumber = 0;
+        statList["Points"] = 0;
+        statList["Kills"] = 0;
+        statList["Deaths"] = 0;
+    }
+    
     private void Start() {
         RespawnSeven();
     }
@@ -52,8 +72,10 @@ public class GameManager : MonoBehaviour {
     }
 
     public void RespawnSeven() {
-        seven.SetActive(true);
-        Destroy(sevenDeath);
+        if (seven != null) {
+            seven.SetActive(true);
+            Destroy(sevenDeath);
+        }
         Checkpoint currentCheckpoint = null;
         foreach (Checkpoint checkpoint in Checkpoints) {
             if (checkpoint.checkpointNumber == checkpointNumber) {
@@ -74,6 +96,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void Lose() {
+        PlayerAttack.Instance.StopAllCoroutines();
         gameLost = true;
         inGameText.text = "Press [SPACE] to continue...";
 
@@ -96,6 +119,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Awake() {
+        _enemyList.Clear();
         _instance = this;
     }
 }

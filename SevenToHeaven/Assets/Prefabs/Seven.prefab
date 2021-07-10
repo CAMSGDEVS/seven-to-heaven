@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8844216636202208462}
   - component: {fileID: 8844216636202208457}
   - component: {fileID: 8844216636202208459}
+  - component: {fileID: 6722672966899836267}
   m_Layer: 0
   m_Name: Seven
   m_TagString: Untagged
@@ -78,7 +79,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831c4ff79c1fe494e978668cb3af479f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  windStrength: 10
+  windStrength: 1
+  xBound: 9
+  yBound: 5
 --- !u!222 &8844216636202208467
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -178,6 +181,20 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0.2}
   m_Size: {x: 0.4, y: 0.45}
   m_Direction: 0
+--- !u!114 &6722672966899836267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8844216636202208470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03dc6f259222fa7459e20ebada7163c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  panel: {fileID: 0}
 --- !u!1 &8844216636851287358
 GameObject:
   m_ObjectHideFlags: 0

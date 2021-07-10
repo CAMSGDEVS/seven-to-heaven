@@ -123,6 +123,7 @@ MonoBehaviour:
   rb2d: {fileID: 0}
   speed: 1
   rotationSpeed: 200
+  boundingBox: {fileID: 0}
   projectiles: []
   enemyProjectilePrefab: {fileID: 4781952980746229397, guid: a449c99a06c579841b3f8d836280ab80, type: 3}
   attackMelee: 0
@@ -131,6 +132,7 @@ MonoBehaviour:
   projectileSpacingFromPlayer: 2
   health: 3
   fireCooldown: 3
+  invulnerable: 0
   TargettingPlayer: 1
   visionLength: 10
   projectileVisionLength: 5

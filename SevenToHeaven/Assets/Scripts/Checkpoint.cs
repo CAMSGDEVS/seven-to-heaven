@@ -14,6 +14,9 @@ public class Checkpoint : MonoBehaviour
     private GameObject respawnAnimationPrefab;
     private void Awake() {
         GameManager.Instance.Checkpoints.Add(this);
+        if (GameManager.checkpointNumber >= checkpointNumber) {
+            GetComponent<SpriteRenderer>().color = completedColor;
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision) {
         PlayerAttack playerAttack = collision.gameObject.GetComponent<PlayerAttack>();
@@ -27,7 +30,6 @@ public class Checkpoint : MonoBehaviour
     }
 
     private IEnumerator RespawnSevenCoroutine() {
-        GetComponent<SpriteRenderer>().color = completedColor;
         GameObject respawnAnimation = Instantiate(respawnAnimationPrefab, gameObject.transform.position, Quaternion.identity);
         yield return new WaitForSeconds(1);
         GameManager.Instance.seven = Instantiate(sevenPrefab, gameObject.transform.position, Quaternion.identity);

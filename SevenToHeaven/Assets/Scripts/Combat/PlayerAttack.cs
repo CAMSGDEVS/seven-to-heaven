@@ -14,16 +14,6 @@ public class PlayerAttack : MonoBehaviour
             return _instance;
         } private set { }
     }
-    private static List<Enemy> _enemyList = new List<Enemy>();
-    public static List<Enemy> EnemyList {
-        get {
-            if (_enemyList == null) {
-                Debug.LogError("EnemyList is null");
-            }
-            return _enemyList;
-        }
-        set { }
-    }
     private static List<Projectile> _playerProjectiles = new List<Projectile>();
     public static List<Projectile> PlayerProjectiles {
         get {
@@ -56,12 +46,12 @@ public class PlayerAttack : MonoBehaviour
 
     private void Awake() { //Initialize Variables
         _playerProjectiles.Clear();
-        _enemyList.Clear();
-        PlayerAttack._instance = this;
+        _instance = this;
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         invincibilityTimePassed = hitInvincibility;
     }
-
+    
+    
     private void Update() {
         //Update attack and invincibility timers
         if (secondsSinceLastAttack < cooldownSeconds) {
@@ -89,7 +79,7 @@ public class PlayerAttack : MonoBehaviour
         Projectile projectileComponent = projectile.GetComponent<Projectile>();
         PlayerProjectiles.Add(projectile.GetComponent<Projectile>());
         secondsSinceLastAttack = 0;
-        if (EnemyList.Any()) {
+        if (GameManager.EnemyList.Any()) {
             if (enemiesInRange.Any()) {
                 projectileComponent.target = enemiesInRange[0].gameObject;
             } else {
@@ -106,7 +96,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void CheckEnemiesInRange() { //Checks if any enemies are in the attack range using distance formula
         enemiesInRange = new List<Enemy>();
-        foreach (Enemy enemy in EnemyList) {
+        foreach (Enemy enemy in GameManager.EnemyList) {
             enemy.CalculateDistanceFromPlayer(); //Distance formula
             if (enemy.DistanceFromPlayer <= attackRange) { //Enemies in the attack range are added to the list
                 enemiesInRange.Add(enemy);
@@ -123,7 +113,7 @@ public class PlayerAttack : MonoBehaviour
             if (projectile != null && !projectile.playerProjectile) { //Detect Projectiles
                 health -= projectile.damage;
                 projectile.source.GetComponent<Enemy>().projectiles.Remove(projectile);
-                GameObject.Destroy(projectile.gameObject);
+                Destroy(projectile.gameObject);
                 if (health > 0) {
                     StartCoroutine(damageAnimation());
                 }
@@ -139,20 +129,22 @@ public class PlayerAttack : MonoBehaviour
         } else { //Destroys projectiles that touch the player during invincibility
             if (projectile != null && !projectile.playerProjectile) {
                 projectile.source.GetComponent<Enemy>().projectiles.Remove(projectile);
-                GameObject.Destroy(projectile.gameObject);
+                Destroy(projectile.gameObject);
             }
         }
         if (health <= 0) { //Check for player death
 
+            GameManager.statList["Deaths"] += 1;
+
             //Destroying all projectiles to prevent further damage or
             //an accidental level completion if killing enemies becomes an objective
             foreach (Projectile proj in PlayerProjectiles) {
-                GameObject.Destroy(proj.gameObject);
+                Destroy(proj.gameObject);
             }
             PlayerProjectiles.Clear();
-            foreach (Enemy enemy in EnemyList) {
+            foreach (Enemy enemy in GameManager.EnemyList) {
                 foreach (Projectile proj in enemy.projectiles) {
-                    GameObject.Destroy(proj);
+                    Destroy(proj);
                 }
 
                 enemy.projectiles.Clear();

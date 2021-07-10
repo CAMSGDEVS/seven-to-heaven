@@ -11,6 +11,8 @@ public class CursorSprite : MonoBehaviour {
     private Vector3 mousePos;
     private Object[] cursorTextures, cursorTexturesFlipped;
 
+    private bool playerSet = false;
+
     private void Awake() {
         cursorTextures = Resources.LoadAll("Cursor/Cursor", typeof(Texture2D));
         cursorTexturesFlipped = Resources.LoadAll("Cursor/CursorFlipped", typeof(Texture2D));
@@ -18,8 +20,12 @@ public class CursorSprite : MonoBehaviour {
 
     private void Update() {
         if (GameManager.Instance.respawnFinished) {
-            player = GameManager.Instance.seven;
+            if (!playerSet) {
+                player = GameManager.Instance.seven;
+                playerSet = true;
+            }
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePos = new Vector2(mousePos.x + 0.5f, mousePos.y - 0.5f);
             angle = Mathf.Atan2(player.transform.position.y - mousePos.y, player.transform.position.x - mousePos.x) * Mathf.Rad2Deg;
             textureIndex = (int) Mathf.Abs(angle / 20f) % 8;
 

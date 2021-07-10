@@ -12,13 +12,17 @@ public class OpenDoor : MonoBehaviour {
     private bool isCurrentDoorOpen;
 
     IEnumerator WaitForAnim() {
-        yield return new WaitForSeconds(3f);
+        if (levelDoor.shakes) {
+            yield return new WaitForSeconds(3f);
+        }
         // animator.GetCurrentAnimatorStateInfo(0).length is slow, and returns the length of the previous state. A hard-coded value is used instead.
         SceneManager.LoadScene(levelDoor.level);
     }
 
     IEnumerator WaitForWinAnim() {
-        yield return new WaitForSeconds(3f);
+        if (levelDoor.shakes) {
+            yield return new WaitForSeconds(3f);
+        }
         GameManager.Instance.Win();
     }
 
@@ -30,15 +34,19 @@ public class OpenDoor : MonoBehaviour {
         if (Input.GetKeyDown("space"))
             if (isCurrentDoorOpen) {
                 if (levelDoor.level != "Win") {
-                    Animator animator = levelDoor.GetComponent<Animator>();
-                    animator.SetBool("doorIsOpening", true);
+                    if (levelDoor.shakes) {
+                        Animator animator = levelDoor.GetComponent<Animator>();
+                        animator.SetBool("doorIsOpening", true);
                     StartCoroutine(CameraMovement.Instance.Shake(3f, 0.04f));
+                    }
                     StartCoroutine(WaitForAnim());
                 } else {
                     // Check if winning is possible here
-                    Animator animator = levelDoor.GetComponent<Animator>();
-                    animator.SetBool("doorIsOpening", true);
-                    StartCoroutine(CameraMovement.Instance.Shake(3f, 0.04f));
+                    if (levelDoor.shakes) {
+                        Animator animator = levelDoor.GetComponent<Animator>();
+                        animator.SetBool("doorIsOpening", true);
+                        StartCoroutine(CameraMovement.Instance.Shake(3f, 0.04f));
+                    }
                     StartCoroutine(WaitForWinAnim());
                 }
             }
