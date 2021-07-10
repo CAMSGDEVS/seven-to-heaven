@@ -25,7 +25,7 @@ public class CursorSprite : MonoBehaviour {
                 playerSet = true;
             }
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mousePos = new Vector2(mousePos.x + 0.5f, mousePos.y - 0.5f);
+            mousePos = new Vector2(mousePos.x, mousePos.y);
             angle = Mathf.Atan2(player.transform.position.y - mousePos.y, player.transform.position.x - mousePos.x) * Mathf.Rad2Deg;
             textureIndex = (int) Mathf.Abs(angle / 20f) % 8;
 
