@@ -2388,7 +2388,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2948339487487571588, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
       propertyPath: signText
-      value: haha sign
+      value: Speedrunners beware! These red circles are bumpers. While they don't
+        hurt you, they can bump you away and mess up your run. How fun!
       objectReference: {fileID: 0}
     - target: {fileID: 7833438412507395282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
       propertyPath: m_Name
@@ -4669,7 +4670,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2948339487487571588, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
       propertyPath: signText
-      value: haha sign
+      value: If you haven't pushed enough buttons yet, you can use use RMB to fire
+        darts at enemies.
       objectReference: {fileID: 0}
     - target: {fileID: 7833438412507395282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
       propertyPath: m_Name
@@ -4735,7 +4737,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2948339487487571588, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
       propertyPath: signText
-      value: haha sign
+      value: That ball with spikes on it? That's a popper. It can deal damage to
+        you, but you won't die in one hit.
       objectReference: {fileID: 0}
     - target: {fileID: 7833438412507395282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
       propertyPath: m_Name
@@ -5905,7 +5908,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2948339487487571588, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
       propertyPath: signText
-      value: haha sign
+      value: You see those red and green orbs? Those are checkpoints. If you die,
+        you'll be given the option to respawn. Now, go across that gap!
       objectReference: {fileID: 0}
     - target: {fileID: 7833438412507395282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
       propertyPath: m_Name
@@ -6495,7 +6499,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2948339487487571588, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
       propertyPath: signText
-      value: haha sign
+      value: Those spikes can kill you in one hit. Be careful!
       objectReference: {fileID: 0}
     - target: {fileID: 7833438412507395282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
       propertyPath: m_Name
