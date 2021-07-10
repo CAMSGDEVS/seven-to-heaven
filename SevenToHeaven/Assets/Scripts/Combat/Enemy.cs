@@ -37,14 +37,16 @@ public class Enemy : HomingObject
         }
     }
     private void Update() {
-        if (PlayerAttack.Instance != null) {
-            TargetPlayer();
-        } else {
-            rb2d.velocity = Vector2.zero;
-            rb2d.angularVelocity = 0f;
-        }
-        if (timeSinceLastFire < fireCooldown) {
-            timeSinceLastFire += Time.deltaTime;
+        if (GameManager.Instance.respawnFinished) {
+            if (PlayerAttack.Instance != null) {
+                TargetPlayer();
+            } else {
+                rb2d.velocity = Vector2.zero;
+                rb2d.angularVelocity = 0f;
+            }
+            if (timeSinceLastFire < fireCooldown) {
+                timeSinceLastFire += Time.deltaTime;
+            }
         }
     }
 

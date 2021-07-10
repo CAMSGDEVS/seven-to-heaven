@@ -13,9 +13,7 @@ public class CameraMovement : MonoBehaviour {
         }
         set { }
     }
-
-    [SerializeField]
-    private Transform target;
+    public Transform target;
 
     [SerializeField]
     private Transform anchor;
@@ -38,9 +36,12 @@ public class CameraMovement : MonoBehaviour {
 
     private void Awake() {
         _instance = this;
+        target = GameManager.Instance.transform;
     }
-
     private void LateUpdate() {
+        if (GameManager.Instance.respawnFinished) {
+            target = GameManager.Instance.seven.transform;
+        }
         anchor.position = new Vector3(target.position.x, target.position.y, -10f); // Lock z-axis
     }
 }

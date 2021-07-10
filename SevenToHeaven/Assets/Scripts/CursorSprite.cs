@@ -17,17 +17,20 @@ public class CursorSprite : MonoBehaviour {
     }
 
     private void Update() {
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        angle = Mathf.Atan2(player.transform.position.y - mousePos.y, player.transform.position.x - mousePos.x) * Mathf.Rad2Deg;
-        textureIndex = (int)Mathf.Abs(angle / 20f) % 8;
+        if (GameManager.Instance.respawnFinished) {
+            player = GameManager.Instance.seven;
+            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            angle = Mathf.Atan2(player.transform.position.y - mousePos.y, player.transform.position.x - mousePos.x) * Mathf.Rad2Deg;
+            textureIndex = (int) Mathf.Abs(angle / 20f) % 8;
 
-        if (angle > -20f && angle < 160f) {
-            texture = (Texture2D)cursorTextures[textureIndex];
-        } else {
-            texture = (Texture2D)cursorTexturesFlipped[textureIndex];
+            if (angle > -20f && angle < 160f) {
+                texture = (Texture2D)cursorTextures[textureIndex];
+            } else {
+                texture = (Texture2D)cursorTexturesFlipped[textureIndex];
+            }
+
+            Cursor.SetCursor(texture, Vector2.zero, CursorMode.ForceSoftware);
         }
-
-        Cursor.SetCursor(texture, Vector2.zero, CursorMode.ForceSoftware);
     }
 
 }

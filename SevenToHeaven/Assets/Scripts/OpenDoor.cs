@@ -22,6 +22,10 @@ public class OpenDoor : MonoBehaviour {
         GameManager.Instance.Win();
     }
 
+    private void Start() {
+        text = UIText.Instance.text;
+    }
+
     private void Update() {
         if (Input.GetKeyDown("space"))
             if (isCurrentDoorOpen) {
