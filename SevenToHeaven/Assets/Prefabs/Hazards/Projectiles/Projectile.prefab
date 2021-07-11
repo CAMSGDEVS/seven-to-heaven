@@ -134,6 +134,8 @@ MonoBehaviour:
   rb2d: {fileID: 0}
   speed: 3
   rotationSpeed: 600
+  enemyParticleColor: {r: 1, g: 1, b: 1, a: 1}
+  particlePrefab: {fileID: 4731686090176090239, guid: a4cd1959036d0ec43916e54fb281423a, type: 3}
   damage: 1
   playerProjectile: 1
 --- !u!50 &-6033388401832542083

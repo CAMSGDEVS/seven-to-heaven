@@ -122,7 +122,8 @@ public class Enemy : HomingObject
             if (projectile != null && projectile.playerProjectile) {
                 health -= projectile.damage/2;
                 PlayerAttack.PlayerProjectiles.Remove(projectile);
-                GameObject.Destroy(projectile.gameObject);
+                projectile.SpawnParticles();
+                Destroy(projectile.gameObject);
                 if (health <= 0) {
                     foreach (Projectile proj in PlayerAttack.PlayerProjectiles) {
                         if (proj.target = gameObject) {
@@ -131,7 +132,7 @@ public class Enemy : HomingObject
                     }
                     foreach (Projectile proj in projectiles) {
                         if (proj != null) {
-                            GameObject.Destroy(proj.gameObject);
+                            Destroy(proj.gameObject);
                         }
                     }
                     projectiles.Clear();

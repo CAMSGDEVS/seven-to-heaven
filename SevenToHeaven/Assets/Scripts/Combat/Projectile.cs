@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class Projectile : HomingObject
 {
+    
     [System.NonSerialized]
     public EnemyBoundingBox boundingBox;
+
     private float length;
+
+    public Color enemyParticleColor;
+    public GameObject particlePrefab;
 
     public float damage = 1f;
     public bool playerProjectile = true;
@@ -21,6 +26,13 @@ public class Projectile : HomingObject
     void Start() { //Initialize variables
         rb2d = gameObject.GetComponent<Rigidbody2D>();
         fader = gameObject.GetComponent<Fade>();
+    }
+
+    public void SpawnParticles() {
+        GameObject particle = Instantiate(particlePrefab, transform.position, transform.rotation);
+        if (!playerProjectile) {
+            particle.GetComponentInChildren<SpriteRenderer>().color = enemyParticleColor;
+        }
     }
 
     // Update is called once per frame

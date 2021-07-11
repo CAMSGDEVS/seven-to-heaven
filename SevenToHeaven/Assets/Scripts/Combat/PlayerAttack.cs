@@ -129,6 +129,7 @@ public class PlayerAttack : MonoBehaviour
         } else { //Destroys projectiles that touch the player during invincibility
             if (projectile != null && !projectile.playerProjectile) {
                 projectile.source.GetComponent<Enemy>().projectiles.Remove(projectile);
+                projectile.SpawnParticles();
                 Destroy(projectile.gameObject);
             }
         }
