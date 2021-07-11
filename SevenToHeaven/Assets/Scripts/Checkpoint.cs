@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
@@ -21,11 +20,13 @@ public class Checkpoint : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         PlayerAttack playerAttack = collision.gameObject.GetComponent<PlayerAttack>();
         if (playerAttack != null && GameManager.checkpointNumber < checkpointNumber) {
+            AudioManager.Instance.Play("checkpoint");
             GameManager.checkpointNumber = checkpointNumber;
             GetComponent<SpriteRenderer>().color = completedColor;
         }
     }
     public void RespawnSeven() {
+        AudioManager.Instance.Play("respawn");
         StartCoroutine(RespawnSevenCoroutine());
     }
 

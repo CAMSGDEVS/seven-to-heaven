@@ -105,6 +105,7 @@ public class Enemy : HomingObject
         }
     }
     private void ShootProjectile() {
+        AudioManager.Instance.Play("enemy");
         GameObject projectile = Instantiate(enemyProjectilePrefab, gameObject.transform.position, Quaternion.identity);
         Projectile projectileComponent = projectile.GetComponent<Projectile>();
         projectiles.Add(projectileComponent);
@@ -119,12 +120,14 @@ public class Enemy : HomingObject
     private void OnTriggerEnter2D(Collider2D collision) {
         if (!invulnerable) {
             Projectile projectile = collision.gameObject.GetComponent<Projectile>();
-            if (projectile != null && projectile.playerProjectile) {
+            if (projectile != null && projectile.playerProjectile) { // Take damage
+                AudioManager.Instance.Play("enemyDamage");
                 health -= projectile.damage/2;
                 PlayerAttack.PlayerProjectiles.Remove(projectile);
                 projectile.SpawnParticles();
                 Destroy(projectile.gameObject);
-                if (health <= 0) {
+                if (health <= 0) { // Death
+                    AudioManager.Instance.Play("enemyDamage");
                     foreach (Projectile proj in PlayerAttack.PlayerProjectiles) {
                         if (proj.target = gameObject) {
                             proj.fader.timePassed = proj.fader.despawnSeconds - 0.125f*(proj.fader.despawnSeconds - proj.fader.timePassed);

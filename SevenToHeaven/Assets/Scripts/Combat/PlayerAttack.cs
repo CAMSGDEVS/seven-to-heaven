@@ -74,6 +74,7 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void Attack() {
+        AudioManager.Instance.Play("playerAttack");
         CheckEnemiesInRange();
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position - new Vector3(0, 0.125f), Quaternion.identity);
         Projectile projectileComponent = projectile.GetComponent<Projectile>();
@@ -111,6 +112,7 @@ public class PlayerAttack : MonoBehaviour
         Enemy collidedEnemy = collision.gameObject.GetComponent<Enemy>();
         if (invincibilityTimePassed >= hitInvincibility) { //Prevents hits during invulnerability
             if (projectile != null && !projectile.playerProjectile) { //Detect Projectiles
+                AudioManager.Instance.Play("hurt");
                 health -= projectile.damage;
                 projectile.source.GetComponent<Enemy>().projectiles.Remove(projectile);
                 Destroy(projectile.gameObject);
@@ -119,6 +121,7 @@ public class PlayerAttack : MonoBehaviour
                 }
             } else { //Detect Enemies
                 if (collidedEnemy != null && collidedEnemy.attackMelee) {
+                    AudioManager.Instance.Play("hurt");
                     health -= collidedEnemy.meleeDamage;
                     if (health > 0) {
                         StartCoroutine(damageAnimation());
@@ -134,7 +137,7 @@ public class PlayerAttack : MonoBehaviour
             }
         }
         if (health <= 0) { //Check for player death
-
+            AudioManager.Instance.Play("death");
             GameManager.statList["Deaths"] += 1;
 
             //Destroying all projectiles to prevent further damage or
