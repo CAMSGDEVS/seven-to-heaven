@@ -41,6 +41,7 @@ public class DirectionAnimations : MonoBehaviour
         Vector2.zero,
         new Vector2(0.32f,-0.3f),
         new Vector2(0.32f,-0.3f),
+        new Vector2(0.32f,-0.3f),
         new Vector2(0.33f, 0.2f)
     };
     private List<Vector2> angledSevenOffsets = new List<Vector2>() {
@@ -51,6 +52,7 @@ public class DirectionAnimations : MonoBehaviour
         new Vector2(-0.05f, -0.17f),
         new Vector2(-0.09f, -0.13f),
         Vector2.zero,
+        new Vector2(-0.11f,-0.01f),
         new Vector2(-0.11f,-0.01f),
         new Vector2(-0.11f,-0.11f),
         new Vector2(-0.11f, -0.13f)
@@ -63,6 +65,7 @@ public class DirectionAnimations : MonoBehaviour
         new Vector2(0.36f, 0.3f),
         new Vector2(0.4f, 0.27f),
         Vector2.zero,
+        new Vector2(0.42f,0.37f),
         new Vector2(0.42f,0.37f),
         new Vector2(0.42f,0.24f),
         new Vector2(0.42f,0.27f)
@@ -173,9 +176,9 @@ public class DirectionAnimations : MonoBehaviour
     }
 
     private void AngledAnimation() { //Animation when seven is in the air and being blown
-        velocity = (int)Mathf.Sqrt(Mathf.Pow(rb2d.velocity.x, 2) + Mathf.Pow(rb2d.velocity.y, 2));
+        velocity = (int) Mathf.Sqrt(Mathf.Pow(rb2d.velocity.x, 2) + Mathf.Pow(rb2d.velocity.y, 2));
         if (velocity <= 0) velocity = 1;
-        rotateFrameCycle = System.Convert.ToInt32((rotateFrameCycle + 1) % ((float)maxSpeed / (float)velocity));
+        rotateFrameCycle = System.Convert.ToInt32((rotateFrameCycle + 1) % ((float) maxSpeed / (float) velocity));
 
         if (velocity > maxSpeed / 2 || rotateFrameCycle == Mathf.RoundToInt((maxSpeed / velocity) / 2)) {
             inRotationFrameGroupOne = !inRotationFrameGroupOne;
@@ -184,13 +187,11 @@ public class DirectionAnimations : MonoBehaviour
 
         int spriteIndex = AngleToIndex(angle);
         int finalSpriteIndex;
-        if (spriteIndex == 7) {
-            finalSpriteIndex = 7;
-        } else if (spriteIndex == 6 && transitionFrames < 5) { //Transition animation (index 6)
+        if (spriteIndex == 6 && transitionFrames < 5) { //Transition animation (index 6)
             if (goingUp) {
-                finalSpriteIndex = 9;
+                finalSpriteIndex = 10;
             } else {
-                finalSpriteIndex = 8;
+                finalSpriteIndex = 9;
             }
             transitionFrames++;
         } else {
@@ -199,7 +200,7 @@ public class DirectionAnimations : MonoBehaviour
                     finalSpriteIndex = spriteIndex;
                 } else {
                     if (goingUp) {
-                        finalSpriteIndex = 7;
+                        finalSpriteIndex = 7 + Random.Range(0,1);
                     } else {
                         finalSpriteIndex = 5;
                     }
@@ -207,7 +208,7 @@ public class DirectionAnimations : MonoBehaviour
             } else {
                 finalSpriteIndex = spriteIndex switch { //Lower angle's sprite when in frame group 2 (except for sprite 0 and 7, as -1 and 6 are null)
                     0 => 1,
-                    7 => 7,
+                    7 => 8,
                     6 => (goingUp ? 7 : 4),
                     int n when n > 0 && n < 7 => spriteIndex - 1,
                     _ => 0 //Should never occur
@@ -217,15 +218,16 @@ public class DirectionAnimations : MonoBehaviour
                 transitionFrames = 0;
             }
         }
+        Debug.Log(finalSpriteIndex);
         //GoingUp if index = 7 or outside of a transition animation
-        if (spriteIndex == 7 || (spriteIndex == 6 && (transitionFrames == 0 || transitionFrames == 5))) {
+        if (spriteIndex == 7 || spriteIndex == 8 || (spriteIndex == 6 && (transitionFrames == 0 || transitionFrames == 5))) {
             goingUp = true;
         } else {
             goingUp = false;
         }
 
-        if (finalSpriteIndex > 7) {
-            sevenSpriteR.sprite = sevenFlyingTransitionSprites[finalSpriteIndex - 8];
+        if (finalSpriteIndex > 8) {
+            sevenSpriteR.sprite = sevenFlyingTransitionSprites[finalSpriteIndex - 9];
         } else {
             sevenSpriteR.sprite = sevenFlyingSprites[finalSpriteIndex];
         }
