@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetMouseButton(0)) {
+        if (Input.GetMouseButton(0) && !GameManager.Instance.gameWon) {
             windIsBlowing = true;
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             direction = mousePos - transform.position;
