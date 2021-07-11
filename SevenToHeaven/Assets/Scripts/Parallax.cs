@@ -6,28 +6,43 @@ public class Parallax : MonoBehaviour
 {
     private float length;
     private float width;
-    private float startPosition;
+    [SerializeField]
+    private float startPositionX;
+    [SerializeField]
+    private float startPositionY;
+    [SerializeField]
     private GameObject cameraObj;
     [SerializeField]
     private float parallaxScale;
 
+    private float offsetX;
+    private float offsetY;
+
     void Start() {
-        cameraObj = CameraMovement.Instance.anchor.gameObject;
-        startPosition = transform.position.x;
+        startPositionX = cameraObj.transform.position.x + transform.position.x;
+        startPositionY = cameraObj.transform.position.y + transform.position.y;
         length = GetComponent<SpriteRenderer>().bounds.size.x;
         width = GetComponent<SpriteRenderer>().bounds.size.y;
+        offsetX = cameraObj.transform.position.x - transform.position.x;
+        offsetY = cameraObj.transform.position.y - transform.position.y;
     }
 
-    // Update is called once per frame
     void Update() {
         float temp = cameraObj.transform.position.x * (1 - parallaxScale);
-        float distance = (cameraObj.transform.position.x * parallaxScale);
-        transform.position = new Vector3(startPosition + distance, transform.position.y, transform.position.z);
+        float temp2 = cameraObj.transform.position.y * (1 - parallaxScale);
+        float distance = cameraObj.transform.position.x * parallaxScale;
+        float distance2 = cameraObj.transform.position.y * parallaxScale;
+        transform.position = new Vector3(startPositionX + distance + offsetX, startPositionY + distance2 + offsetY, transform.position.z);
         
-        if (temp > startPosition + length) {
-            startPosition += length;
-        } else if (temp < startPosition - length) {
-            startPosition -= length;
+        if (temp > startPositionX + length) {
+            startPositionX += length;
+        } else if (temp < startPositionX - length) {
+            startPositionX -= length;
+        }
+        if (temp2 > startPositionY + width) {
+            startPositionY += width;
+        } else if (temp2 < startPositionY - width) {
+            startPositionY -= width;
         }
     }
 }
