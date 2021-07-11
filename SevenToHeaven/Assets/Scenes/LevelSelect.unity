@@ -291,7 +291,7 @@ MonoBehaviour:
   transitionTime: 0.517
   xLeft: -10
   yBottom: -5
-  yTop: 2
+  yTop: 4
 --- !u!1001 &352444113
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1051,7 +1051,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 0a5d3558ac9e3f54b8db9e109345e241, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1353,6 +1353,103 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0516edc3f1a2da40a62b2435c82e232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1460809759
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2948339487487571588, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: signText
+      value: Eight was here
+      objectReference: {fileID: 0}
+    - target: {fileID: 7833438412507395282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_Name
+      value: Sign (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179858449557403282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179858449557403282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179858449557403282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179858449557403282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179858449557403282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179858449557403282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179858449557403282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179858449557403282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179858449557403282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179858449557403282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179858449557403282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+--- !u!1 &1460809760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7833438412507395282, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+  m_PrefabInstance: {fileID: 1460809759}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1460809761 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2948339487487571588, guid: a6609e3b9e6b79744bb64efeb7124a96, type: 3}
+  m_PrefabInstance: {fileID: 1460809759}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460809760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0516edc3f1a2da40a62b2435c82e232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1460809762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460809760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b29784053c1176445ac676dbc4adf38a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endText: 'Thank you for playing the Seven to Heaven Demo!
+
+    Due to time constaints,
+    we could only finish the tutorial.
+
+    Visit our itch.io page or github repo
+    in the future to play the next update!'
+  sign: {fileID: 1460809761}
 --- !u!1001 &1519193298
 PrefabInstance:
   m_ObjectHideFlags: 0
