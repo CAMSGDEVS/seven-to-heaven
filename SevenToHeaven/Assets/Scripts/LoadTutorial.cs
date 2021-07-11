@@ -7,15 +7,19 @@ public class LoadTutorial : MonoBehaviour
     public GameObject transitionPrefab;
     public float transitionTime;
 
+    private bool tutorialAlreadyLoaded = false;
     public int xLeft, yBottom, yTop;
 
     private void Update()
     {
-        if (GameManager.Instance.respawnFinished) {
-            float x = GameManager.Instance.seven.transform.position.x;
-            float y = GameManager.Instance.seven.transform.position.y;
-            if (x < xLeft || y < yBottom || y > yTop) {
-                LoadTutorialLevel();
+        if (!tutorialAlreadyLoaded) {
+            if (GameManager.Instance.respawnFinished) {
+                float x = GameManager.Instance.seven.transform.position.x;
+                float y = GameManager.Instance.seven.transform.position.y;
+                if (x < xLeft || y < yBottom || y > yTop) {
+                    LoadTutorialLevel();
+                    tutorialAlreadyLoaded = true;
+                }
             }
         }
     }

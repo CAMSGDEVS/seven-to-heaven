@@ -218,7 +218,6 @@ public class DirectionAnimations : MonoBehaviour
                 transitionFrames = 0;
             }
         }
-        Debug.Log(finalSpriteIndex);
         //GoingUp if index = 7 or outside of a transition animation
         if (spriteIndex == 7 || spriteIndex == 8 || (spriteIndex == 6 && (transitionFrames == 0 || transitionFrames == 5))) {
             goingUp = true;
