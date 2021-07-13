@@ -3295,7 +3295,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bumper
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4781952980746229397, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
+      propertyPath: m_TagString
+      value: Bumper
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -6033388401832542083, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
 --- !u!1 &936765115
 GameObject:
@@ -4311,7 +4316,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bumper (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4781952980746229397, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
+      propertyPath: m_TagString
+      value: Bumper
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -6033388401832542083, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
 --- !u!4 &1259324853 stripped
 Transform:
@@ -4870,7 +4880,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bumper (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4781952980746229397, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
+      propertyPath: m_TagString
+      value: Bumper
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -6033388401832542083, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
 --- !u!1001 &1461827690
 PrefabInstance:
@@ -4927,7 +4942,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bumper (3)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4781952980746229397, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
+      propertyPath: m_TagString
+      value: Bumper
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -6033388401832542083, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9d28319635b9dbc459f1e712b5fa489a, type: 3}
 --- !u!4 &1464611061 stripped
 Transform:

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
@@ -12,14 +12,15 @@ public class PlayerMovement : MonoBehaviour {
         } set {}
     }
 
+    private float bounceTimeLength = 0.7f; // How long movement is disabled after hitting a bumper
     public float windStrength = 5f;
-
-    private Vector3 mousePos;
-    private Vector2 direction;
-    private Vector2 magnitude;
-
-    public float xBound = 4f;
     public float yBound = 4f;
+    public float xBound = 4f;
+
+    private Vector3 mousePos, lastVelocity;
+    public Vector2 direction, magnitude;
+
+    private bool isBouncing = false;
 
     public Rigidbody2D rb2d { get; private set; }
     public bool windIsBlowing { get; private set; }
@@ -31,6 +32,8 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void Update() {
+        lastVelocity = rb2d.velocity;
+
         if (Input.GetMouseButton(0) && !GameManager.Instance.gameWon) {
             windIsBlowing = true;
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -55,9 +58,26 @@ public class PlayerMovement : MonoBehaviour {
             windIsBlowing = false;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.collider.transform.tag == "Bumper") {
+            StartCoroutine(WaitForBounce());
+            float bounceSpeed = lastVelocity.magnitude;
+            Vector3 bounceDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+
+            rb2d.velocity = bounceDirection * Mathf.Max(bounceSpeed, 10f);
+        }
+    }
+
+    private IEnumerator WaitForBounce() {
+        isBouncing = true;
+        yield return new WaitForSeconds(bounceTimeLength);
+        isBouncing = false;
+    }
+
     private void FixedUpdate() {
-        if (windIsBlowing) {
-            rb2d.velocity = new Vector2(direction.x * windStrength * magnitude.x, direction.y * windStrength * magnitude.y) * -1;
+        if (!isBouncing) {
+            if (windIsBlowing)
+                rb2d.velocity = new Vector2(direction.x * windStrength * magnitude.x, direction.y * windStrength * magnitude.y) * -1;
         }
     }
 }
