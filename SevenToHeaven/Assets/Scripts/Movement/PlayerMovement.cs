@@ -12,8 +12,7 @@ public class PlayerMovement : MonoBehaviour {
         } set {}
     }
 
-    private float bounceTimeLength = 0.7f; // How long movement is disabled after hitting a bumper
-    private float collisionTimeLength = 0.2f; //Same as above but for walls
+    private float bounceEndVelocity = 2f; //The velocity when control is returned to the player after a bounce
     public float windStrength = 5f;
     public float yBound = 4f;
     public float xBound = 4f;
@@ -60,33 +59,28 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-
         if (collision.collider.transform.tag == "Tile") {
-            StartCoroutine(WaitForBounce(true));
-            float bounceSpeed = lastVelocity.magnitude/4;
-            Vector3 bounceDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
-            bounceDirection.y = 0;
-            rb2d.velocity = bounceDirection * Mathf.Max(bounceSpeed, 5f);
-            
-            
-        } else if (collision.collider.transform.tag == "Bumper") {
-            StartCoroutine(WaitForBounce(false));
+            isBouncing = true;
             float bounceSpeed = lastVelocity.magnitude;
             Vector3 bounceDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
-            rb2d.velocity = bounceDirection * Mathf.Max(bounceSpeed, 10f);
+            bounceDirection.y = 0;
+            rb2d.velocity = bounceDirection * Mathf.Min(bounceSpeed, 5f);
+        } else if (collision.collider.transform.tag == "Bumper") {
+            isBouncing = true;
+            float bounceSpeed = lastVelocity.magnitude*2;
+            Vector3 bounceDirection = Vector3.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
+            rb2d.velocity = bounceDirection * Mathf.Min(bounceSpeed, 10f);
         }
-    }
-
-    private IEnumerator WaitForBounce(bool wall) {
-        isBouncing = true;
-        yield return new WaitForSeconds(wall? collisionTimeLength :bounceTimeLength);
-        isBouncing = false;
     }
 
     private void FixedUpdate() {
         if (!isBouncing) {
             if (windIsBlowing)
                 rb2d.velocity = new Vector2(direction.x * windStrength * magnitude.x, direction.y * windStrength * magnitude.y) * -1;
+        } else {
+            if (rb2d.velocity.magnitude <= bounceEndVelocity) {
+                isBouncing = false;
+            }
         }
     }
 }
