@@ -44,6 +44,7 @@ public class Checkpoint : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         GameManager.Instance.respawnFinished = true;
         CameraMovement.Instance.target = GameManager.Instance.seven.transform;
+        GameManager.Instance.respawnFinished = true;
         Destroy(respawnAnimation);
     }
 

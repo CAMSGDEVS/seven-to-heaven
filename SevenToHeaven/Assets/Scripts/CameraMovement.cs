@@ -37,12 +37,20 @@ public class CameraMovement : MonoBehaviour {
         _instance = this;
         target = GameManager.Instance.transform;
     }
-    private void LateUpdate() {
-        if (alternateTarget != null) {
-            target = alternateTarget;
-        } else if (GameManager.Instance.respawnFinished) {
+    private void LateUpdate() { // Do this by parenting in editor
+        if (GameManager.Instance.respawnFinished == false) {
+            if (alternateTarget != null) {
+                target = alternateTarget;
+            }
+        } else {
             target = GameManager.Instance.seven.transform;
         }
+
         anchor.position = new Vector3(target.position.x, target.position.y, -10f); // Lock z-axis
+    }
+
+    private IEnumerator ClearAltTarget() {
+        yield return new WaitForSeconds(2f);
+        target = null;
     }
 }
