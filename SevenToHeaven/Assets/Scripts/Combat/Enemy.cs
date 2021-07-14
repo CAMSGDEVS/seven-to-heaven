@@ -121,13 +121,13 @@ public class Enemy : HomingObject
         if (!invulnerable) {
             Projectile projectile = collision.gameObject.GetComponent<Projectile>();
             if (projectile != null && projectile.playerProjectile) { // Take damage
-                AudioManager.Instance.Play("enemyDamage");
+                AudioManager.Instance.Play("enemyHurt");
                 health -= projectile.damage/2;
                 PlayerAttack.PlayerProjectiles.Remove(projectile);
                 projectile.SpawnParticles();
                 Destroy(projectile.gameObject);
                 if (health <= 0) { // Death
-                    AudioManager.Instance.Play("enemyDamage");
+                    AudioManager.Instance.Play("enemyHurt");
                     foreach (Projectile proj in PlayerAttack.PlayerProjectiles) {
                         if (proj.target = gameObject) {
                             proj.fader.timePassed = proj.fader.despawnSeconds - 0.125f*(proj.fader.despawnSeconds - proj.fader.timePassed);
