@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour {
 
+    // Singleton
     private static AudioManager _instance;
     public static AudioManager Instance {
         get {
@@ -19,6 +20,7 @@ public class AudioManager : MonoBehaviour {
 	[SerializeField]
     private AudioClip[] clips; 
 
+    // Play audio clip
 	public void Play(string clip) {
         foreach (AudioClip c in clips) {
             if (c.name == clip)

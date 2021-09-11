@@ -26,6 +26,7 @@ public class RotatingSpikes : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
     }
 
+    // Rotate every frame
     private void Update() {
         transform.position = PolarToCartesian(radius, (clockwise ? 360 - angle : angle)) + center.position;
         rb2d.angularVelocity = rotationSpeed;

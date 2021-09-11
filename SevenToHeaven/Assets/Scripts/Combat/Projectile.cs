@@ -44,15 +44,19 @@ public class Projectile : HomingObject
         CheckIfOutsideBoundingBox();
     }
     
+    // Use fader script to fade
     private void Fade() {
         if (fader != null) {
             fader.FadeObject();
+            // Destroy object when fade ends
             if (fader.fadeEnded) {
                 PlayerAttack.PlayerProjectiles.Remove(this);
                 GameObject.Destroy(this.gameObject);
             }
         }
     }
+
+    // Keep projectile inside bounding box
     private void CheckIfOutsideBoundingBox() {
         if (boundingBox != null) {
             float x = transform.position.x;

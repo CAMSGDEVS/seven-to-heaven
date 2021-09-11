@@ -9,7 +9,10 @@ public class HomingObject : MonoBehaviour
     public float speed = 1f;
     [SerializeField]
     private float rotationSpeed = 200f;
-    public void MoveTowardsTarget() { //Call during FixedUpdate
+
+    // Called during FixedUpdate
+    public void MoveTowardsTarget() { 
+        // Update velocity and direction to move towards target
         if (target != null) {
             Vector2 direction = (Vector2) target.transform.position - rb2d.position;
             direction.Normalize();
@@ -18,6 +21,7 @@ public class HomingObject : MonoBehaviour
             rb2d.velocity = transform.up * speed;
         }
     }
+
     public void MoveAwayFromTarget() {
         MoveTowardsTarget();
         rb2d.angularVelocity *= -1;

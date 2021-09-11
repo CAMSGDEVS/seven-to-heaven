@@ -18,6 +18,7 @@ public class CursorSprite : MonoBehaviour {
         cursorTexturesFlipped = Resources.LoadAll("Cursor/CursorFlipped", typeof(Texture2D));
     }
 
+    // Update cursor sprite based on angle to seven
     private void Update() {
         if (GameManager.Instance.respawnFinished) {
             if (!playerSet) {
@@ -29,6 +30,7 @@ public class CursorSprite : MonoBehaviour {
             angle = Mathf.Atan2(player.transform.position.y - mousePos.y, player.transform.position.x - mousePos.x) * Mathf.Rad2Deg;
             textureIndex = (int) Mathf.Abs(angle / 20f) % 8;
 
+            // Flip sprite if needed
             if (angle > -20f && angle < 160f) {
                 texture = (Texture2D)cursorTextures[textureIndex];
             } else {

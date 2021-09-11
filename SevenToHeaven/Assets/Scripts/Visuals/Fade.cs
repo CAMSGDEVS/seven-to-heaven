@@ -10,11 +10,12 @@ public class Fade : MonoBehaviour
     public bool fadeEnded = false;
 
     private Color originalColor;
-    private void Start()
-    {
+
+    private void Start() {
         originalColor = gameObject.GetComponentInChildren<SpriteRenderer>().color;
     }
-    public void FadeObject() { //Call on update to fade
+
+    public void FadeObject() { // Call on update to fade
         timePassed += Time.deltaTime;
         Color spriteColor = gameObject.GetComponentInChildren<SpriteRenderer>().color;
 

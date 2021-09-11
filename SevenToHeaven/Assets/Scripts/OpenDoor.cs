@@ -56,6 +56,7 @@ public class OpenDoor : MonoBehaviour {
         RaycastHit hit;
         isCurrentDoorOpen = false;
         if (!GameManager.Instance.gameLost) {
+            // Detect if player is in front of door
             if (Physics.Raycast(transform.position, Vector3.forward, out hit)) {
                 levelDoor = hit.transform.GetComponent<LevelDoor>();
                 if (levelDoor.isUnlocked == true) {

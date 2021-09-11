@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Dart : MonoBehaviour
 {
+    // Self-destructs after 0.5 seconds
     private void Start() {
         StartCoroutine(selfDestruct());
     }

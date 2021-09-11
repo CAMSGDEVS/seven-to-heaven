@@ -51,7 +51,6 @@ public class PlayerAttack : MonoBehaviour
         invincibilityTimePassed = hitInvincibility;
     }
     
-    
     private void Update() {
         //Update attack and invincibility timers
         if (secondsSinceLastAttack < cooldownSeconds) {
@@ -74,6 +73,7 @@ public class PlayerAttack : MonoBehaviour
     }
 
     private void Attack() {
+        // Instantiate projectile and set projectile target & variables
         AudioManager.Instance.Play("playerAttack");
         CheckEnemiesInRange();
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position - new Vector3(0, 0.125f), Quaternion.identity);

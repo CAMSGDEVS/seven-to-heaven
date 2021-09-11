@@ -7,6 +7,8 @@ public class EnemyBoundingBox : MonoBehaviour
     public float xLeft, xRight, yTop, yBottom;
 
     private BoxCollider2D box;
+    
+    // Initialize variables
     private void Awake() {
         box = GetComponent<BoxCollider2D>();
         xLeft = transform.position.x - (box.size.x / 2);

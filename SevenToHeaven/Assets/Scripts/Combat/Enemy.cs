@@ -37,19 +37,26 @@ public class Enemy : HomingObject
         length = transform.lossyScale.x/2;
         width = transform.lossyScale.y/2;
     }
+    
+    // Add to list of enemies
     private void Start() {
         if (!invulnerable) {
             GameManager.EnemyList.Add(this);
         }
     }
+
+    // Runs on every frame
     private void Update() {
         if (GameManager.Instance.respawnFinished) {
+            // Move towards player if it exists
             if (PlayerAttack.Instance != null) {
                 TargetPlayer();
             } else {
                 rb2d.velocity = Vector2.zero;
                 rb2d.angularVelocity = 0f;
             }
+
+            // Update projectile cooldown
             if (timeSinceLastFire < fireCooldown) {
                 timeSinceLastFire += Time.deltaTime;
             }
@@ -59,6 +66,7 @@ public class Enemy : HomingObject
         CheckIfOutsideBoundingBox();
     }
 
+    // Keep enemy inside bounding box
     private void CheckIfOutsideBoundingBox() {
         if (boundingBox != null) {
             float x = transform.position.x;
@@ -83,12 +91,15 @@ public class Enemy : HomingObject
 
     private void TargetPlayer() {
         DistanceFromPlayer = CalculateDistanceFromPlayer();
+        
         if (TargettingPlayer) {
+            // Shoot projectile if cooldown is over
             if (timeSinceLastFire >= fireCooldown) {
                 if (shootsProjectiles && DistanceFromPlayer <= projectileVisionLength) {
                     ShootProjectile();
                 }
             }
+            // Move towards player if close enough
             if (DistanceFromPlayer <= visionLength) {
                 target = PlayerAttack.Instance.gameObject;
                 MoveTowardsTarget();
@@ -96,16 +107,21 @@ public class Enemy : HomingObject
                 target = null;
                 rb2d.velocity = Vector2.zero;
             }
+        // Don't move if player not present
         } else {
             target = null;
             rb2d.velocity = Vector2.zero;
         }
+
+        // If too close, ranged enemies run away
         if (!attackMelee && DistanceFromPlayer <= projectileSpacingFromPlayer) {
             MoveAwayFromTarget();
         }
     }
     private void ShootProjectile() {
         AudioManager.Instance.Play("enemy");
+
+        // Instantiate projectile and update its variables
         GameObject projectile = Instantiate(enemyProjectilePrefab, gameObject.transform.position, Quaternion.identity);
         Projectile projectileComponent = projectile.GetComponent<Projectile>();
         projectiles.Add(projectileComponent);
@@ -117,16 +133,21 @@ public class Enemy : HomingObject
         projectile.transform.rotation = gameObject.transform.rotation;
     }
 
+    // Activates when colliding with other collider
     private void OnTriggerEnter2D(Collider2D collision) {
         if (!invulnerable) {
             Projectile projectile = collision.gameObject.GetComponent<Projectile>();
-            if (projectile != null && projectile.playerProjectile) { // Take damage
+            
+            // Take damage if player projectile hits
+            if (projectile != null && projectile.playerProjectile) { 
                 AudioManager.Instance.Play("enemyHurt");
                 health -= projectile.damage/2;
                 PlayerAttack.PlayerProjectiles.Remove(projectile);
                 projectile.SpawnParticles();
                 Destroy(projectile.gameObject);
-                if (health <= 0) { // Death
+
+                // If health = 0, destroy own projectiles, destroy enemy object, and update score
+                if (health <= 0) {
                     AudioManager.Instance.Play("enemyHurt");
                     foreach (Projectile proj in PlayerAttack.PlayerProjectiles) {
                         if (proj.target = gameObject) {

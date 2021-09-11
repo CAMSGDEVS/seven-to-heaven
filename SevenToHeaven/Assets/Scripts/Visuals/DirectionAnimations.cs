@@ -31,6 +31,7 @@ public class DirectionAnimations : MonoBehaviour
 
     private List<Vector2> originalColliderOffsets = new List<Vector2>();
 
+    // Hard-coded offsets (TODO: Read from CSV)
     private List<Vector2> angledBalloonOffsets = new List<Vector2>() {
         new Vector2(0.06f,0.23f),
         new Vector2(0.12f, 0.27f),
@@ -102,7 +103,7 @@ public class DirectionAnimations : MonoBehaviour
         }
         
 
-        //Hard-coded lists for animations
+        //Hard-coded lists for animations (TODO: Load from CSV)
         sevenNeutralSpriteIndices.AddRange(Enumerable.Repeat(0, 7)
                                  .Concat(Enumerable.Repeat(1, 6)
                                  .Concat(Enumerable.Repeat(2, 10)
@@ -124,14 +125,16 @@ public class DirectionAnimations : MonoBehaviour
                               .Concat(Enumerable.Repeat(1, 6)
                               .Concat(new List<int> { 0 })))))).ToList());
     }
-    private void Update() {
 
+    private void Update() {
+        // Change sprite to facing left or right
         UpdateFlip();
     }
-    private void FixedUpdate() { //Update the sprite every 2 frames
+
+    private void FixedUpdate() { 
         frameCycle = (frameCycle + 1) % 2;
         if (!GameManager.Instance.gameLost) {
-            if (frameCycle == 1) {
+            if (frameCycle == 1) { // Update the sprite every 2 frames
                 if (PlayerMovement.Instance.windIsBlowing) {
                     UpdateAngle();
                     AngledAnimation();
@@ -145,14 +148,15 @@ public class DirectionAnimations : MonoBehaviour
         if (rb2d.velocity.y == 0) { previousYVelocityZero = true; } else { previousYVelocityZero = false; }
     }
 
-    private void NeutralAnimation() { //Animation when seven is in the air but not being blown
-        if (previousAnimationType != 0) { //Reset animation cycle when changing animations
+    private void NeutralAnimation() { // Animation when seven is in the air but not being blown
+        if (previousAnimationType != 0) { // Reset animation cycle when changing animations
             previousAnimationType = 0;
             animationCycle = 0;
         }
-        //Slightly change position so the balloon looks like the center of gravity
+        // Slightly change position so the balloon looks like the center of gravity
         sevenGameObject.transform.localPosition = new Vector3((sevenSpriteR.flipX == true ? -1f : 1f) * sevenNeutralHorizontalSpriteTranslations[animationCycle], sevenNeutralVerticalSpriteTranslations[animationCycle]);
-
+        
+        // Update colliders based on sprite
         for (int i = 0; i < sevenColliders.Count; i++) {
             sevenColliders[i].offset = originalColliderOffsets[2 * (i)] + new Vector2(sevenNeutralHorizontalSpriteTranslations[animationCycle], sevenNeutralVerticalSpriteTranslations[animationCycle]);
             balloonColliders[i].offset = originalColliderOffsets[2 * (i) + 1];
@@ -162,13 +166,16 @@ public class DirectionAnimations : MonoBehaviour
         animationCycle = (animationCycle + 1) % sevenNeutralSpriteIndices.Count;
     }
 
-    private void IdleAnimation() { //Animation when seven is on the ground
-        if (previousAnimationType != 1) { //Reset animation cycle when changing animations
+    private void IdleAnimation() { // Animation when seven is on the ground
+        if (previousAnimationType != 1) { // Reset animation cycle when changing animations
             previousAnimationType = 1;
             animationCycle = 0;
         }
+        // Cycle sprite every 2 frames
         sevenSpriteR.sprite = sevenIdleSprites[sevenIdleSpriteIndices[animationCycle]];
         animationCycle = (animationCycle + 1) % 30;
+
+        // Update colliders based on sprite
         for (int i = 0; i < 2; i++) {
             sevenColliders[i].offset = originalColliderOffsets[2 * (i)];
             balloonColliders[i].offset = originalColliderOffsets[2 * (i) + 1] - new Vector2(sevenNeutralHorizontalSpriteTranslations[animationCycle], sevenNeutralVerticalSpriteTranslations[animationCycle]); 
@@ -176,10 +183,13 @@ public class DirectionAnimations : MonoBehaviour
     }
 
     private void AngledAnimation() { //Animation when seven is in the air and being blown
+        // Determine seven's velocity to change speed of animation
         velocity = (int) Mathf.Sqrt(Mathf.Pow(rb2d.velocity.x, 2) + Mathf.Pow(rb2d.velocity.y, 2));
         if (velocity <= 0) velocity = 1;
         rotateFrameCycle = System.Convert.ToInt32((rotateFrameCycle + 1) % ((float) maxSpeed / (float) velocity));
 
+        // If the velocity is high enough, change sprite frame
+        // Every angle except the transition angles have two possible frames
         if (velocity > maxSpeed / 2 || rotateFrameCycle == Mathf.RoundToInt((maxSpeed / velocity) / 2)) {
             inRotationFrameGroupOne = !inRotationFrameGroupOne;
         }
@@ -195,10 +205,13 @@ public class DirectionAnimations : MonoBehaviour
             }
             transitionFrames++;
         } else {
-            if (inRotationFrameGroupOne == true) { //Regular angle sprite when in frame group 1
+            // Regular angle sprite when in frame group 1
+            if (inRotationFrameGroupOne == true) {
+                // 6 will return null, as there is no frame for 6
                 if (spriteIndex != 6) {
                     finalSpriteIndex = spriteIndex;
                 } else {
+                    // For index 6, will either be sprite 5, 7, or 8
                     if (goingUp) {
                         finalSpriteIndex = 7 + Random.Range(0,1);
                     } else {
@@ -206,7 +219,8 @@ public class DirectionAnimations : MonoBehaviour
                     }
                 }
             } else {
-                finalSpriteIndex = spriteIndex switch { //Lower angle's sprite when in frame group 2 (except for sprite 0 and 7, as -1 and 6 are null)
+                // Lower angle's sprite when in frame group 2 (except for sprite 0 and 7, as -1 and 6 are null)
+                finalSpriteIndex = spriteIndex switch { 
                     0 => 1,
                     7 => 8,
                     6 => (goingUp ? 7 : 4),
@@ -214,27 +228,31 @@ public class DirectionAnimations : MonoBehaviour
                     _ => 0 //Should never occur
                 };
             }
-            if (spriteIndex != 6) { //Resets the transition animation's frame count
+            // Resets the transition animation's frame count if transition is not occuring
+            if (spriteIndex != 6) {
                 transitionFrames = 0;
             }
         }
-        //GoingUp if index = 7 or outside of a transition animation
+        // GoingUp if index = 7 or outside of a transition animation
         if (spriteIndex == 7 || spriteIndex == 8 || (spriteIndex == 6 && (transitionFrames == 0 || transitionFrames == 5))) {
             goingUp = true;
         } else {
             goingUp = false;
         }
-
+        
+        // Makes sure index <= 8
         if (finalSpriteIndex > 8) {
             sevenSpriteR.sprite = sevenFlyingTransitionSprites[finalSpriteIndex - 9];
         } else {
             sevenSpriteR.sprite = sevenFlyingSprites[finalSpriteIndex];
         }
+
         AssignAngledColliders(finalSpriteIndex);
         UpdateFlip();
     }
 
-    private void UpdateFlip() { //Flips sprite when heading left
+    //Flips sprite when heading left
+    private void UpdateFlip() {
         if (rb2d.velocity.x > 0) { 
             sevenSpriteR.flipX = false;
         } else {
@@ -246,14 +264,16 @@ public class DirectionAnimations : MonoBehaviour
         }
     }
 
+    // Update angle to rb2d angle
     private void UpdateAngle() {
         angle = Mathf.Atan2(rb2d.velocity.y, rb2d.velocity.x) * 180 / (Mathf.PI);
         if (angle > 90) angle = -1 * angle + 180; // Maps from 2nd quadrant to 1st quadrant (90 to 180) -> (90 to 0)
         else if (angle < -90) angle = (-1 * angle - 180); // Maps from 3rd quadrant to 4th quadrant (-90 to -180) -> (-90 to 0)
-        angle = -1 * angle + 90; //Maps from (90 to -90) -> (0 to 180
+        angle = -1 * angle + 90; // Maps from (90 to -90) -> (0 to 180)
     }
 
-    private void AssignAngledColliders(int spriteIndex) {
+    // Changes collider position and rotation based on angledanimation sprite
+    private void AssignAngledColliders(int spriteIndex) { 
         for (int i = 0; i < 2; i++) {
             sevenColliders[i].offset = angledSevenOffsets[spriteIndex];
             balloonColliders[i].offset = angledBalloonOffsets[spriteIndex];
@@ -262,6 +282,7 @@ public class DirectionAnimations : MonoBehaviour
         sevenColliders[0].size = angledSevenSizes[spriteIndex] + new Vector2(0.01f,0.01f);
     }
 
+    // Converts an angle from 0-180 to a value from 1-7
     private int AngleToIndex(float angle) {
         int index = (int) Mathf.Floor(angle / 15);
         if (index > 7) { //Values above 7 are mapped back to 7

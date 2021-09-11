@@ -9,6 +9,8 @@ public class Sign : MonoBehaviour
     public float xLeft, xRight, yTop, yBottom;
 
     private BoxCollider2D box;
+
+    // Initialize sign boundaries
     private void Awake() {
         GameManager.Instance.signs.Add(this);
         box = GetComponent<BoxCollider2D>();

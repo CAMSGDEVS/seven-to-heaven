@@ -10,8 +10,8 @@ public class LoadTutorial : MonoBehaviour
     private bool tutorialAlreadyLoaded = false;
     public int xLeft, yBottom, yTop;
 
-    private void Update()
-    {
+    // Load tutorial if seven flies to the left of the screen
+    private void Update() {
         if (!tutorialAlreadyLoaded) {
             if (GameManager.Instance.respawnFinished) {
                 float x = GameManager.Instance.seven.transform.position.x;

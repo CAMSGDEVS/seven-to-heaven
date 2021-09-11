@@ -15,6 +15,7 @@ public class SignDetector : MonoBehaviour
         StartCoroutine(detectSign());
     }
 
+    // Detect if transform inside sign bounds
     private IEnumerator detectSign() {
         while (true) {
             bool inSign = false;

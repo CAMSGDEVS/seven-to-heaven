@@ -9,6 +9,7 @@ public class ProjectileParticle : MonoBehaviour
         StartCoroutine(destroyAfterTimer());
     }
 
+    // Self-destruct after half a second
     private IEnumerator destroyAfterTimer() {
         yield return new WaitForSeconds(0.5f);
         Destroy(this.gameObject);

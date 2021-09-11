@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour {
     public bool gameWon = false, gameLost = false;
     private GameObject sevenDeath; // Holds the instantialized prefabs
 
+    // Holds player statistics
     public static Dictionary<string, int> statList = new Dictionary<string, int>() {
         {"Points", 0},
         {"Kills", 0},
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour {
         statList["Deaths"] = 0;
     }
     
+    // Spawn seven when level starts
     private void Start() {
         RespawnSeven();
     }
@@ -84,6 +86,8 @@ public class GameManager : MonoBehaviour {
             seven.SetActive(true);
             Destroy(sevenDeath);
         }
+
+        // Spawn seven at correct checkpoint
         Checkpoint currentCheckpoint = null;
         foreach (Checkpoint checkpoint in Checkpoints) {
             if (checkpoint.checkpointNumber == checkpointNumber) {
@@ -92,9 +96,11 @@ public class GameManager : MonoBehaviour {
             }
         }
         if (currentCheckpoint != null) {
+            // Move camera to checkpoint and respawn seven
             CameraMovement.Instance.target = currentCheckpoint.transform;
             currentCheckpoint.RespawnSeven();
         } else {
+            // Instantiate new checkpoint if no checkpoint is present
             GameObject checkpointGameObject = Instantiate(checkpointPrefab, Vector2.zero, Quaternion.identity);
             currentCheckpoint = checkpointGameObject.GetComponent<Checkpoint>();
             checkpointNumber = 0;
@@ -111,7 +117,7 @@ public class GameManager : MonoBehaviour {
         sevenDeath = Instantiate(sevenDeathPrefab); // Instantiate GameObject to play Seven's death animation
         sevenDeath.transform.position = seven.transform.position;
 
-        seven.SetActive(false); // Inactivate seven to prevent reference errors with Destory()
+        seven.SetActive(false); // Inactivate seven to prevent reference errors with Destroy()
     }
 
     private void Update() {

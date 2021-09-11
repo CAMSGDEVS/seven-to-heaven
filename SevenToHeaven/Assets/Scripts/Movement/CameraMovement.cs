@@ -21,6 +21,7 @@ public class CameraMovement : MonoBehaviour {
         float elapsed = 0.0f;
         Vector3 originalPos = transform.localPosition;
 
+        // Add random offset to camera position every frame
         while (elapsed < duration) {
             float x = Random.Range(-1f, 1f) * magnitude;
             float y = Random.Range(-1f, 1f) * magnitude;

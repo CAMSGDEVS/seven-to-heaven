@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour {
             float y = Mathf.Abs(direction.y);
             direction = direction.normalized;
             
+            // Decrease speed if too fast
             if (x > xBound) {
                 x = xBound;
                 windIsBlowing = false;
@@ -59,6 +60,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
+        // Bounce lightly off of tiles and greatly off of bumpers
         if (collision.collider.transform.tag == "Tile") {
             isBouncing = true;
             float bounceSpeed = lastVelocity.magnitude;
@@ -74,6 +76,7 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        // Reverse direction if bouncing
         if (!isBouncing) {
             if (windIsBlowing)
                 rb2d.velocity = new Vector2(direction.x * windStrength * magnitude.x, direction.y * windStrength * magnitude.y) * -1;

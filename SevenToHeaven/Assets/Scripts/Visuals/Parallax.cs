@@ -27,6 +27,7 @@ public class Parallax : MonoBehaviour
         offsetY = cameraObj.transform.position.y - transform.position.y;
     }
 
+    // Update position of the 9 copies of the background based on the position of the camera
     void Update() {
         float temp = cameraObj.transform.position.x * (1 - parallaxScale);
         float temp2 = cameraObj.transform.position.y * (1 - parallaxScale);
